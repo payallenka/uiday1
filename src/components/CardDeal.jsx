@@ -18,7 +18,9 @@ const CardDeal = () => (
     </div>
 
     <div className={layout.sectionImg}>
-      <img src={card} alt="billing" className="w-[100%] h-[100%]" />
+      <div className="neumorphic-card">
+        <img src={card} alt="billing" className="w-[100%] h-[100%] bounce-in delay-300 float-animation" />
+      </div>
     </div>
   </section>
 );
