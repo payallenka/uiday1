@@ -136,10 +136,8 @@ const Auth = () => {
     setMessage("");
 
     try {
-      // Get the current domain for redirect
-      const redirectUrl = window.location.hostname === 'localhost' 
-        ? `${window.location.origin}/dashboard`
-        : `${window.location.origin}/dashboard`;
+      // Always use the current origin for OAuth redirect
+      const redirectUrl = `${window.location.origin}/dashboard`;
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -164,10 +162,8 @@ const Auth = () => {
     setMessage("");
 
     try {
-      // Get the current domain for redirect
-      const redirectUrl = window.location.hostname === 'localhost' 
-        ? `${window.location.origin}/reset-password`
-        : `${window.location.origin}/reset-password`;
+      // Always use the current origin for password reset
+      const redirectUrl = `${window.location.origin}/reset-password`;
 
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: redirectUrl,
