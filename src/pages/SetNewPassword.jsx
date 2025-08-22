@@ -14,13 +14,27 @@ const SetNewPassword = () => {
     // Check for password recovery event
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('Auth state change:', event, session?.user?.id);
+        
         if (event === 'PASSWORD_RECOVERY') {
+          console.log('Password recovery event detected');
           setTokenValid(true);
           setMessage("Password recovery verified! You can now set your new password.");
         } else if (event === 'SIGNED_IN' && session) {
-          // Check if this is from a password reset token
-          setTokenValid(true);
-          setMessage("Token verified! You can now set your new password.");
+          // Only set valid if this is a recovery session (check URL for recovery type)
+          const hashParams = new URLSearchParams(window.location.hash.substring(1));
+          const type = hashParams.get('type');
+          
+          if (type === 'recovery') {
+            console.log('Recovery session detected');
+            setTokenValid(true);
+            setMessage("Token verified! You can now set your new password.");
+          } else {
+            console.log('Regular sign in detected, checking for existing recovery session');
+            // Check if user already has a valid session that can reset password
+            setTokenValid(true);
+            setMessage("Token verified! You can now set your new password.");
+          }
         }
       }
     );
@@ -28,37 +42,49 @@ const SetNewPassword = () => {
     // Also check current session for existing recovery tokens
     const checkSession = async () => {
       try {
-        const { data: { session }, error } = await supabase.auth.getSession();
+        console.log('Checking initial session and URL...');
         
-        if (session && session.user) {
-          setTokenValid(true);
-          setMessage("Token verified! You can now set your new password.");
-        } else {
-          // Try to get session from URL hash (for password reset tokens)
-          const hashParams = new URLSearchParams(window.location.hash.substring(1));
-          const accessToken = hashParams.get('access_token');
-          const refreshToken = hashParams.get('refresh_token');
-          const type = hashParams.get('type');
+        // First check URL for recovery tokens
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const accessToken = hashParams.get('access_token');
+        const refreshToken = hashParams.get('refresh_token');
+        const type = hashParams.get('type');
+        
+        console.log('URL params:', { hasAccessToken: !!accessToken, type });
+        
+        if (accessToken && type === 'recovery') {
+          console.log('Setting recovery session from URL...');
+          const { data, error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken
+          });
           
-          if (accessToken && type === 'recovery') {
-            const { data, error } = await supabase.auth.setSession({
-              access_token: accessToken,
-              refresh_token: refreshToken
-            });
-            
-            if (data.session && !error) {
-              setTokenValid(true);
-              setMessage("Token verified! You can now set your new password.");
-            } else {
-              setTokenValid(false);
-              setMessage("Invalid or expired reset token. Please request a new password reset.");
-            }
+          if (data.session && !error) {
+            setTokenValid(true);
+            setMessage("Token verified! You can now set your new password.");
+            // Clear the URL hash after setting session
+            window.history.replaceState(null, '', window.location.pathname);
           } else {
+            console.error('Error setting session:', error);
+            setTokenValid(false);
+            setMessage("Invalid or expired reset token. Please request a new password reset.");
+          }
+        } else {
+          // Check if there's already a valid session
+          const { data: { session }, error } = await supabase.auth.getSession();
+          
+          if (session && session.user) {
+            console.log('Existing session found');
+            setTokenValid(true);
+            setMessage("Token verified! You can now set your new password.");
+          } else {
+            console.log('No valid session or recovery token found');
             setTokenValid(false);
             setMessage("No reset token found. Please request a new password reset.");
           }
         }
       } catch (err) {
+        console.error('Error checking session:', err);
         setTokenValid(false);
         setMessage("Error verifying reset token. Please try again.");
       }
@@ -96,8 +122,11 @@ const SetNewPassword = () => {
       if (error) {
         setMessage(`Error updating password: ${error.message}`);
       } else {
-        setMessage("Password updated successfully! Redirecting to login...");
-        // Redirect to auth page after 2 seconds
+        setMessage("Password updated successfully! Signing you out...");
+        
+        // Sign out the user and redirect to login
+        await supabase.auth.signOut();
+        
         setTimeout(() => {
           navigate("/auth");
         }, 2000);
