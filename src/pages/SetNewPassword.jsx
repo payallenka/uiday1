@@ -11,7 +11,21 @@ const SetNewPassword = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if there's a session from the password reset token
+    // Check for password recovery event
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'PASSWORD_RECOVERY') {
+          setTokenValid(true);
+          setMessage("Password recovery verified! You can now set your new password.");
+        } else if (event === 'SIGNED_IN' && session) {
+          // Check if this is from a password reset token
+          setTokenValid(true);
+          setMessage("Token verified! You can now set your new password.");
+        }
+      }
+    );
+
+    // Also check current session for existing recovery tokens
     const checkSession = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
@@ -24,8 +38,9 @@ const SetNewPassword = () => {
           const hashParams = new URLSearchParams(window.location.hash.substring(1));
           const accessToken = hashParams.get('access_token');
           const refreshToken = hashParams.get('refresh_token');
+          const type = hashParams.get('type');
           
-          if (accessToken) {
+          if (accessToken && type === 'recovery') {
             const { data, error } = await supabase.auth.setSession({
               access_token: accessToken,
               refresh_token: refreshToken
@@ -50,6 +65,8 @@ const SetNewPassword = () => {
     };
 
     checkSession();
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const handleSetNewPassword = async () => {
