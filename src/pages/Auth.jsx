@@ -139,7 +139,7 @@ const Auth = () => {
       // Get the current domain for redirect
       const redirectUrl = window.location.hostname === 'localhost' 
         ? `${window.location.origin}/dashboard`
-        : 'https://uiday1.vercel.app/dashboard';
+        : `${window.location.origin}/dashboard`;
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -167,7 +167,7 @@ const Auth = () => {
       // Get the current domain for redirect
       const redirectUrl = window.location.hostname === 'localhost' 
         ? `${window.location.origin}/reset-password`
-        : 'https://uiday1.vercel.app/reset-password';
+        : `${window.location.origin}/reset-password`;
 
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: redirectUrl,
