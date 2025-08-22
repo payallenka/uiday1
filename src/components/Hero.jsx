@@ -1,6 +1,6 @@
 import styles from "../style";
 import { discount, robot } from "../assets";
-import GetStarted from "./GetStarted";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -11,9 +11,7 @@ const Hero = () => {
             The Next <br className="sm:block hidden" />{" "}
             <span className="text-gradient float-animation">Generation</span>{" "}
           </h1>
-          <div className="ss:flex hidden md:mr-4 mr-0 bounce-in delay-500">
-            <GetStarted />
-          </div>
+          
         </div>
 
         <h1 className="font-poppins font-semibold ss:text-[68px] text-[52px] ss:leading-[100.8px] leading-[75px] w-full bounce-in delay-200" style={{color: '#1a202c'}}>
@@ -26,7 +24,7 @@ const Hero = () => {
         </p>
       </div>
 
-      <div className={`flex-1 flex ${styles.flexCenter} md:my-0 my-10 relative`}>
+      <div className={`flex-1 flex ${styles.flexCenter} md:my-0 my-5 relative`}>
         <img src={robot} alt="billing" className="w-[100%] h-[100%] relative z-[5] bounce-in delay-300 float-animation" />
 
         {/* gradient start */}
@@ -36,9 +34,7 @@ const Hero = () => {
         {/* gradient end */}
       </div>
 
-      <div className={`ss:hidden ${styles.flexCenter} bounce-in delay-600`}>
-        <GetStarted />
-      </div>
+      
     </section>
   );
 };
