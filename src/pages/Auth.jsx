@@ -42,7 +42,13 @@ const Auth = () => {
           setTimeout(() => navigate("/dashboard"), 1500);
         }
       } else {
-        // Register
+        // Register - validate required fields
+        if (!isValidUsername(username)) {
+          setMessage("Please enter a valid username (3-30 characters, letters, numbers, and underscores only)");
+          setLoading(false);
+          return;
+        }
+
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
@@ -51,31 +57,38 @@ const Auth = () => {
         if (error) {
           setMessage(`Registration failed: ${error.message}`);
         } else if (data.user) {
+          // Show immediate feedback
+          setMessage("Creating your account and setting up profile...");
+          
           // Function to update profile with retry logic
           const updateProfile = async (retries = 3) => {
             try {
+              console.log(`Attempting to save profile - Username: "${username.trim()}", Avatar: "${avatar.trim() || 'none'}"`);
+              
               // First try to upsert (insert or update) the profile
               const { error: upsertError } = await supabase
                 .from("profiles")
                 .upsert({
                   id: data.user.id,
-                  username: username || null,
-                  avatar: avatar || null,
+                  username: username.trim(),
+                  avatar: avatar.trim() || null,
                 }, {
                   onConflict: 'id'
                 });
 
               if (upsertError) {
+                console.warn("Upsert failed, trying update:", upsertError.message);
                 // If upsert fails, try to update existing profile
                 const { error: updateError } = await supabase
                   .from("profiles")
                   .update({
-                    username: username || null,
-                    avatar: avatar || null,
+                    username: username.trim(),
+                    avatar: avatar.trim() || null,
                   })
                   .eq('id', data.user.id);
 
                 if (updateError && retries > 0) {
+                  console.warn(`Update failed, retrying in 500ms. Retries left: ${retries - 1}`);
                   // Retry after a short delay
                   setTimeout(() => updateProfile(retries - 1), 500);
                   return;
@@ -86,23 +99,28 @@ const Auth = () => {
                     return;
                   }
                 }
+              } else {
+                console.log("Profile saved successfully!");
               }
               
-              setMessage("Registration successful! Please check your email to verify your account.");
-              setTimeout(() => navigate("/dashboard"), 1500);
+              setMessage("Registration successful! Your profile has been created. Please check your email to verify your account.");
+              setTimeout(() => {
+                setMessage("Redirecting to dashboard...");
+                navigate("/dashboard");
+              }, 2000);
             } catch (err) {
               console.warn("Profile setup error:", err);
               if (retries > 0) {
+                console.warn(`Retrying profile creation. Retries left: ${retries - 1}`);
                 setTimeout(() => updateProfile(retries - 1), 500);
               } else {
-                setMessage("Registration successful! Please check your email to verify your account.");
+                setMessage("Registration successful! Please check your email to verify your account. Profile will be set up on first login.");
                 setTimeout(() => navigate("/dashboard"), 1500);
               }
             }
           };
 
-          // Show initial success message and start profile update
-          setMessage("Creating your account...");
+          // Start profile update process
           updateProfile();
         }
       }
@@ -302,7 +320,7 @@ const Auth = () => {
 
             <button
               onClick={isResetMode ? handlePasswordReset : handleAuth}
-              disabled={loading || !email || (isResetMode ? false : !password) || (!isLogin && !isResetMode && !isValidUsername(username))}
+              disabled={loading || !email || (isResetMode ? false : !password) || (!isLogin && !isResetMode && (!username || !isValidUsername(username)))}
               className="w-full bg-gradient-to-r from-green-500 to-green-700 text-white p-4 rounded-xl font-bold text-lg hover:from-green-600 hover:to-green-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-lg"
             >
               {loading ? "Processing..." : (isResetMode ? "Send Reset Email" : (isLogin ? "Sign In" : "Create Account"))}
