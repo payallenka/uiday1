@@ -26,7 +26,7 @@ const Footer = () => (
               {footerlink.links.map((link, index) => (
                 <li
                   key={link.name}
-                  className={`font-poppins font-normal text-[16px] leading-[24px] text-dimWhite hover:text-secondary cursor-pointer ${
+                  className={`font-poppins font-normal text-[16px] leading-[24px] text-dimWhite hover:text-secondary cursor-pointer transition-all duration-300 ease-in-out hover:transform hover:translateY-[-1px] hover:scale-105 ${
                     index !== footerlink.links.length - 1 ? "mb-4" : "mb-0"
                   }`}
                 >
@@ -50,7 +50,7 @@ const Footer = () => (
             key={social.id}
             src={social.icon}
             alt={social.id}
-            className={`w-[21px] h-[21px] object-contain cursor-pointer ${
+            className={`w-[21px] h-[21px] object-contain cursor-pointer transition-all duration-300 ease-in-out hover:transform hover:translateY-[-2px] hover:scale-110 hover:drop-shadow-lg ${
               index !== socialMedia.length - 1 ? "mr-6" : "mr-0"
             }`}
             onClick={() => window.open(social.link)}
