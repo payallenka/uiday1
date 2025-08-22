@@ -11,86 +11,85 @@ const SetNewPassword = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check for password recovery event
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log('Auth state change:', event, session?.user?.id);
-        
-        if (event === 'PASSWORD_RECOVERY') {
-          console.log('Password recovery event detected');
-          setTokenValid(true);
-          setMessage("Password recovery verified! You can now set your new password.");
-        } else if (event === 'SIGNED_IN' && session) {
-          // Only set valid if this is a recovery session (check URL for recovery type)
-          const hashParams = new URLSearchParams(window.location.hash.substring(1));
-          const type = hashParams.get('type');
+    console.log('SetNewPassword component mounted');
+    console.log('Current URL:', window.location.href);
+    console.log('URL Hash:', window.location.hash);
+    
+    // Prevent any automatic redirects by checking URL immediately
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const accessToken = hashParams.get('access_token');
+    const type = hashParams.get('type');
+    
+    console.log('URL parameters:', { hasAccessToken: !!accessToken, type });
+    
+    if (accessToken && type === 'recovery') {
+      console.log('This is a password recovery request - setting up session');
+      
+      // Set the session from the URL tokens
+      const setupRecoverySession = async () => {
+        try {
+          const refreshToken = hashParams.get('refresh_token');
           
-          if (type === 'recovery') {
-            console.log('Recovery session detected');
-            setTokenValid(true);
-            setMessage("Token verified! You can now set your new password.");
-          } else {
-            console.log('Regular sign in detected, checking for existing recovery session');
-            // Check if user already has a valid session that can reset password
-            setTokenValid(true);
-            setMessage("Token verified! You can now set your new password.");
-          }
-        }
-      }
-    );
-
-    // Also check current session for existing recovery tokens
-    const checkSession = async () => {
-      try {
-        console.log('Checking initial session and URL...');
-        
-        // First check URL for recovery tokens
-        const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        const accessToken = hashParams.get('access_token');
-        const refreshToken = hashParams.get('refresh_token');
-        const type = hashParams.get('type');
-        
-        console.log('URL params:', { hasAccessToken: !!accessToken, type });
-        
-        if (accessToken && type === 'recovery') {
-          console.log('Setting recovery session from URL...');
           const { data, error } = await supabase.auth.setSession({
             access_token: accessToken,
             refresh_token: refreshToken
           });
           
           if (data.session && !error) {
+            console.log('Recovery session set successfully');
             setTokenValid(true);
-            setMessage("Token verified! You can now set your new password.");
-            // Clear the URL hash after setting session
-            window.history.replaceState(null, '', window.location.pathname);
+            setMessage("Password reset token verified! Enter your new password below.");
+            
+            // Clear the URL hash to prevent re-processing
+            window.history.replaceState(null, '', '/reset-password');
           } else {
-            console.error('Error setting session:', error);
+            console.error('Failed to set recovery session:', error);
             setTokenValid(false);
             setMessage("Invalid or expired reset token. Please request a new password reset.");
           }
-        } else {
-          // Check if there's already a valid session
+        } catch (err) {
+          console.error('Error setting recovery session:', err);
+          setTokenValid(false);
+          setMessage("Error processing reset token. Please try again.");
+        }
+      };
+      
+      setupRecoverySession();
+    } else {
+      // Check if there's already a valid session (user manually navigated here)
+      const checkExistingSession = async () => {
+        try {
           const { data: { session }, error } = await supabase.auth.getSession();
           
           if (session && session.user) {
-            console.log('Existing session found');
+            console.log('Found existing session');
             setTokenValid(true);
-            setMessage("Token verified! You can now set your new password.");
+            setMessage("Session verified! Enter your new password below.");
           } else {
-            console.log('No valid session or recovery token found');
+            console.log('No valid session found');
             setTokenValid(false);
-            setMessage("No reset token found. Please request a new password reset.");
+            setMessage("No password reset token found. Please request a new password reset from the login page.");
           }
+        } catch (err) {
+          console.error('Error checking session:', err);
+          setTokenValid(false);
+          setMessage("Error verifying session. Please try again.");
         }
-      } catch (err) {
-        console.error('Error checking session:', err);
-        setTokenValid(false);
-        setMessage("Error verifying reset token. Please try again.");
-      }
-    };
+      };
+      
+      checkExistingSession();
+    }
 
-    checkSession();
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('SetNewPassword - Auth state change:', event, !!session);
+      
+      if (event === 'PASSWORD_RECOVERY') {
+        console.log('Password recovery event received');
+        setTokenValid(true);
+        setMessage("Password reset verified! Enter your new password below.");
+      }
+    });
 
     return () => subscription.unsubscribe();
   }, []);

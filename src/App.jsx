@@ -14,14 +14,36 @@ const ProtectedRoute = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check if this is a password recovery flow
+    const isPasswordRecovery = () => {
+      const hash = window.location.hash;
+      return hash.includes('type=recovery') || window.location.pathname === '/reset-password';
+    };
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+      console.log('ProtectedRoute initial session check:', !!session, 'Is recovery:', isPasswordRecovery());
+      
+      // Don't set user if we're in password recovery mode
+      if (!isPasswordRecovery()) {
+        setUser(session?.user ?? null);
+      } else {
+        console.log('Skipping user state update - in password recovery mode');
+      }
       setLoading(false);
     });
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('ProtectedRoute - Auth event:', event, 'Has session:', !!session, 'Is recovery:', isPasswordRecovery());
+      
+      // Don't redirect to dashboard during password recovery
+      if (event === 'PASSWORD_RECOVERY' || isPasswordRecovery()) {
+        console.log('Password recovery mode - not updating user state');
+        setLoading(false);
+        return;
+      }
+      
       setUser(session?.user ?? null);
       setLoading(false);
     });
@@ -69,23 +91,35 @@ const HomePage = () => (
   </div>
 );
 
-const App = () => (
-  <Router>
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/auth" element={<Auth />} />
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route path="/password-reset" element={<PasswordReset />} />
-      <Route path="/reset-password" element={<SetNewPassword />} />
-    </Routes>
-  </Router>
-);
+const App = () => {
+  // Handle password recovery tokens that might arrive at the wrong URL
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.includes('type=recovery') && window.location.pathname !== '/reset-password') {
+      console.log('Recovery token detected at wrong URL, redirecting to /reset-password');
+      // Move the hash to the correct path
+      window.location.href = '/reset-password' + hash;
+    }
+  }, []);
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/password-reset" element={<PasswordReset />} />
+        <Route path="/reset-password" element={<SetNewPassword />} />
+      </Routes>
+    </Router>
+  );
+};
 
 export default App;
