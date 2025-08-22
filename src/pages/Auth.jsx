@@ -118,10 +118,15 @@ const Auth = () => {
     setMessage("");
 
     try {
+      // Get the current domain for redirect
+      const redirectUrl = window.location.hostname === 'localhost' 
+        ? `${window.location.origin}/dashboard`
+        : 'https://uiday1-ten.vercel.app/dashboard';
+
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: redirectUrl
         }
       });
 
@@ -141,8 +146,13 @@ const Auth = () => {
     setMessage("");
 
     try {
+      // Get the current domain for redirect
+      const redirectUrl = window.location.hostname === 'localhost' 
+        ? `${window.location.origin}/reset-password`
+        : 'https://uiday1-ten.vercel.app/reset-password';
+
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: redirectUrl,
       });
 
       if (error) {
