@@ -14,32 +14,19 @@ const ProtectedRoute = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if this is a password recovery flow
-    const isPasswordRecovery = () => {
-      const hash = window.location.hash;
-      return hash.includes('type=recovery') || window.location.pathname === '/reset-password';
-    };
-
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('ProtectedRoute initial session check:', !!session, 'Is recovery:', isPasswordRecovery());
-      
-      // Don't set user if we're in password recovery mode
-      if (!isPasswordRecovery()) {
-        setUser(session?.user ?? null);
-      } else {
-        console.log('Skipping user state update - in password recovery mode');
-      }
+      setUser(session?.user ?? null);
       setLoading(false);
     });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('ProtectedRoute - Auth event:', event, 'Has session:', !!session, 'Is recovery:', isPasswordRecovery());
+      console.log('ProtectedRoute - Auth state change:', event, !!session);
       
-      // Don't redirect to dashboard during password recovery
-      if (event === 'PASSWORD_RECOVERY' || isPasswordRecovery()) {
-        console.log('Password recovery mode - not updating user state');
+      // Don't redirect to dashboard if this is a password recovery
+      if (event === 'PASSWORD_RECOVERY') {
+        console.log('Password recovery detected in ProtectedRoute - not setting user');
         setLoading(false);
         return;
       }
@@ -63,20 +50,20 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const HomePage = () => (
-  <div className="bg-gradient-to-r from-green-200 to-green-400 w-full overflow-hidden">
+  <div className="bg-neutral-900 text-white w-full min-h-screen overflow-hidden">
     <div className={`${styles.paddingX} ${styles.flexCenter}`}>
       <div className={`${styles.boxWidth}`}>
         <Navbar />
       </div>
     </div>
 
-    <div className={`bg-gradient-to-r from-green-200 to-green-400 ${styles.flexStart}`}>
+    <div className={`bg-neutral-900 ${styles.flexStart}`}>
       <div className={`${styles.boxWidth}`}>
         <Hero />
       </div>
     </div>
     
-    <div className={`bg-gradient-to-r from-green-200 to-green-400 ${styles.paddingX} ${styles.flexCenter}`}>
+    <div className={`bg-neutral-900 ${styles.paddingX} ${styles.flexCenter}`}>
       <div className={`${styles.boxWidth}`}>
         <Stats />
         <Business />
@@ -91,35 +78,23 @@ const HomePage = () => (
   </div>
 );
 
-const App = () => {
-  // Handle password recovery tokens that might arrive at the wrong URL
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash.includes('type=recovery') && window.location.pathname !== '/reset-password') {
-      console.log('Recovery token detected at wrong URL, redirecting to /reset-password');
-      // Move the hash to the correct path
-      window.location.href = '/reset-password' + hash;
-    }
-  }, []);
-
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/auth" element={<Auth />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/password-reset" element={<PasswordReset />} />
-        <Route path="/reset-password" element={<SetNewPassword />} />
-      </Routes>
-    </Router>
-  );
-};
+const App = () => (
+  <Router>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/auth" element={<Auth />} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/password-reset" element={<PasswordReset />} />
+      <Route path="/reset-password" element={<SetNewPassword />} />
+    </Routes>
+  </Router>
+);
 
 export default App;

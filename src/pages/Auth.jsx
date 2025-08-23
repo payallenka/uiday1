@@ -201,7 +201,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-green-200 to-green-400 min-h-screen flex items-center justify-center relative overflow-hidden">
+    <div className="bg-neutral-900 min-h-screen flex items-center justify-center relative overflow-hidden text-white">
       {/* Left side decorative image */}
       <div className="absolute left-8 top-1/4 hidden lg:block">
         <img 
@@ -246,16 +246,16 @@ const Auth = () => {
       </div>
 
       <div className={`${styles.paddingX} w-full max-w-2xl z-10 relative`}>
-        <div className="bg-white rounded-xl shadow-2xl p-10 backdrop-blur-lg bg-opacity-95">
-          <h1 className="text-4xl font-bold text-center mb-8 text-gray-800 bounce-in delay-300">
+        <div className="bg-neutral-800 rounded-xl shadow-2xl p-10 backdrop-blur-lg bg-opacity-95">
+          <h1 className="text-4xl font-bold text-center mb-8 text-white bounce-in delay-300">
             {isResetMode ? "Reset Password" : (isLogin ? "Welcome Back" : "Join HooBank")}
           </h1>
           
           {message && (
             <div className={`mb-6 p-4 rounded-lg bounce-in delay-400 ${
               message.includes("successful") || message.includes("Please check") || message.includes("sent")
-                ? "bg-green-100 text-green-700 border border-green-200" 
-                : "bg-red-100 text-red-700 border border-red-200"
+                ? "bg-neutral-700 text-green-300 border border-green-700" 
+                : "bg-neutral-700 text-red-300 border border-red-700"
             }`}>
               {message}
             </div>
@@ -267,7 +267,7 @@ const Auth = () => {
               placeholder="Email Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-green-500 focus:border-transparent transition-all text-lg"
+              className="w-full p-4 border border-neutral-700 bg-neutral-900 text-white rounded-xl focus:outline-none focus:ring-3 focus:ring-primary focus:border-transparent transition-all text-lg placeholder:text-neutral-400"
               required
             />
             
@@ -277,7 +277,7 @@ const Auth = () => {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-green-500 focus:border-transparent transition-all text-lg"
+                className="w-full p-4 border border-neutral-700 bg-neutral-900 text-white rounded-xl focus:outline-none focus:ring-3 focus:ring-primary focus:border-transparent transition-all text-lg placeholder:text-neutral-400"
                 required
               />
             )}
@@ -291,8 +291,8 @@ const Auth = () => {
                   onChange={(e) => setUsername(e.target.value)}
                   className={`w-full p-4 border rounded-xl focus:outline-none focus:ring-3 transition-all text-lg ${
                     !isLogin && username && !isValidUsername(username)
-                      ? 'border-red-300 focus:ring-red-500 focus:border-transparent'
-                      : 'border-gray-300 focus:ring-green-500 focus:border-transparent'
+                      ? 'border-red-700 bg-neutral-900 text-white focus:ring-red-500 focus:border-transparent placeholder:text-neutral-400'
+                      : 'border-neutral-700 bg-neutral-900 text-white focus:ring-primary focus:border-transparent placeholder:text-neutral-400'
                   }`}
                   required
                   minLength="3"
@@ -309,7 +309,7 @@ const Auth = () => {
                   placeholder="Avatar URL (optional)"
                   value={avatar}
                   onChange={(e) => setAvatar(e.target.value)}
-                  className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-green-500 focus:border-transparent transition-all text-lg"
+                  className="w-full p-4 border border-neutral-700 bg-neutral-900 text-white rounded-xl focus:outline-none focus:ring-3 focus:ring-primary focus:border-transparent transition-all text-lg placeholder:text-neutral-400"
                 />
               </>
             )}
@@ -317,7 +317,7 @@ const Auth = () => {
             <button
               onClick={isResetMode ? handlePasswordReset : handleAuth}
               disabled={loading || !email || (isResetMode ? false : !password) || (!isLogin && !isResetMode && (!username || !isValidUsername(username)))}
-              className="w-full bg-gradient-to-r from-green-500 to-green-700 text-white p-4 rounded-xl font-bold text-lg hover:from-green-600 hover:to-green-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-lg"
+              className="w-full bg-neutral-700 text-white p-4 rounded-xl font-bold text-lg hover:bg-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-lg"
             >
               {loading ? "Processing..." : (isResetMode ? "Send Reset Email" : (isLogin ? "Sign In" : "Create Account"))}
             </button>
@@ -326,16 +326,16 @@ const Auth = () => {
               <>
                 {/* Divider */}
                 <div className="flex items-center my-6">
-                  <div className="flex-1 border-t border-gray-300"></div>
-                  <span className="px-4 text-gray-500 bg-white">OR</span>
-                  <div className="flex-1 border-t border-gray-300"></div>
+                  <div className="flex-1 border-t border-neutral-700"></div>
+                  <span className="px-4 text-neutral-400 bg-neutral-800">OR</span>
+                  <div className="flex-1 border-t border-neutral-700"></div>
                 </div>
 
                 {/* Google Auth Button */}
                 <button
                   onClick={handleGoogleAuth}
                   disabled={loading}
-                  className="w-full bg-white border-2 border-gray-300 text-gray-700 p-4 rounded-xl font-bold text-lg hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-3"
+                  className="w-full bg-neutral-900 border-2 border-neutral-700 text-white p-4 rounded-xl font-bold text-lg hover:bg-neutral-800 hover:border-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-3"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -349,13 +349,13 @@ const Auth = () => {
             )}
 
             {/* Auth Mode Toggle */}
-            <div className="text-center text-gray-600">
+            <div className="text-center text-neutral-400">
               {isResetMode ? (
                 <p>
                   Remember your password?{" "}
                   <button
                     onClick={toggleResetMode}
-                    className="text-green-600 hover:text-green-800 font-semibold underline"
+                    className="text-primary hover:text-primary-foreground font-semibold underline"
                   >
                     Back to Sign In
                   </button>
@@ -375,7 +375,7 @@ const Auth = () => {
                     <p className="mt-2">
                       <button
                         onClick={toggleResetMode}
-                        className="text-green-600 hover:text-green-800 font-semibold underline"
+                        className="text-primary hover:text-primary-foreground font-semibold underline"
                       >
                         Forgot your password?
                       </button>

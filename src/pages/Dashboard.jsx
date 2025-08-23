@@ -1,15 +1,18 @@
+import { RiUserLine, RiShieldLine, RiGoogleFill, RiMailLine, RiIdCardLine, RiCameraLine, RiEditLine, RiFileTextLine, RiCheckboxCircleLine, RiCloseCircleLine } from '@remixicon/react';
 import { useState, useEffect } from "react";
 import { supabase } from "../helper/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import { bill, card } from "../assets";
 import styles from "../style";
+import Button from "../components/Button";
+import GitHubRepoWidget from "../components/GitHubRepoWidget";
+import StockMarketWidget from "../components/StockMarketWidget";
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editingUsername, setEditingUsername] = useState(false);
-  const [editingAvatar, setEditingAvatar] = useState(false);
   const [newUsername, setNewUsername] = useState("");
   const [newAvatar, setNewAvatar] = useState("");
   const [updating, setUpdating] = useState(false);
@@ -184,345 +187,133 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="bg-gradient-to-r from-green-200 to-green-400 min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#000' }}>
         <div className="text-white text-xl">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-r from-green-200 to-green-400 min-h-screen relative overflow-hidden">
-      {/* Left side decorative image */}
-      <div className="absolute left-4 top-1/3 hidden lg:block">
-        <img 
-          src={card} 
-          alt="card" 
-          className="w-44 h-44 bounce-large delay-200 float-animation opacity-15 hover:opacity-30 transition-opacity"
-        />
-      </div>
-
-      {/* Right side decorative image */}
-      <div className="absolute right-4 top-2/3 hidden lg:block">
-        <img 
-          src={bill} 
-          alt="billing" 
-          className="w-52 h-52 bounce-large delay-400 float-high opacity-15 hover:opacity-30 transition-opacity"
-        />
-      </div>
-
-      {/* Additional decorative images */}
-      <div className="absolute left-1/4 top-10 hidden xl:block">
-        <img 
-          src={bill} 
-          alt="billing" 
-          className="w-28 h-28 bounce-in delay-600 float-high opacity-10"
-        />
-      </div>
-
-      <div className="absolute right-1/3 bottom-10 hidden xl:block">
-        <img 
-          src={card} 
-          alt="card" 
-          className="w-36 h-36 bounce-large delay-800 float-animation opacity-10"
-        />
-      </div>
-
-      <div className={`${styles.paddingX} ${styles.paddingY} relative z-10`}>
-        <div className="max-w-6xl mx-auto">
-          {/* Header Card */}
-          <div className="bg-white/20 backdrop-blur-lg border border-white/30 rounded-2xl shadow-2xl p-8 mb-8 bounce-in delay-300">
-            <div className="flex justify-between items-center">
-              <div>
-                <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg">HooBank Dashboard</h1>
-                <p className="text-white/90 text-lg drop-shadow-md">Manage your financial future with confidence</p>
-              </div>
-              <div className="flex gap-4">
-                <button
-                  onClick={() => navigate("/")}
-                  className="bg-white/20 backdrop-blur-md border border-white/30 text-white px-6 py-3 rounded-xl hover:bg-white/30 transition-all transform hover:scale-105 shadow-lg font-semibold"
-                >
-                  Home
-                </button>
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-500/80 backdrop-blur-md border border-red-300/50 text-white px-6 py-3 rounded-xl hover:bg-red-500/90 transition-all transform hover:scale-105 shadow-lg font-semibold"
-                >
-                  Logout
-                </button>
-              </div>
-            </div>
+    <section className="py-16 px-4 min-h-screen overflow-x-hidden" style={{ backgroundColor: '#000' }}>
+      <div className="max-w-5xl mx-auto text-white">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-12">
+          <h2 className="text-4xl font-bold text-center md:text-left mb-6 md:mb-0 drop-shadow-lg">
+            Dashboard
+          </h2>
+          <div className="flex gap-4 justify-center md:justify-end">
+            <Button styles="px-6 py-3" onClick={() => navigate("/")}>Home</Button>
+            <Button styles="px-6 py-3 bg-red-600 border-red-700 hover:bg-red-700" onClick={handleLogout}>Logout</Button>
           </div>
+        </div>
 
-          {/* User Profile Card */}
-          <div className="bg-white/20 backdrop-blur-lg border border-white/30 rounded-2xl shadow-2xl p-8 mb-8 bounce-in delay-400">
-            {message && (
-              <div className={`mb-4 p-3 rounded-lg backdrop-blur-md border ${
-                message.includes("successfully") 
-                  ? "bg-green-500/20 text-green-100 border-green-300/50" 
-                  : "bg-red-500/20 text-red-100 border-red-300/50"
-              }`}>
-                {message}
-              </div>
+        {message && (
+          <div className={`flex items-center gap-2 mb-6 p-4 rounded-lg ${
+            message.includes("successfully")
+              ? "bg-green-600/20 text-green-400"
+              : "bg-red-600/20 text-red-400"
+          }`}>
+            {message.includes("successfully") ? (
+              <RiCheckboxCircleLine className="w-5 h-5" />
+            ) : (
+              <RiCloseCircleLine className="w-5 h-5" />
             )}
-            
-            <div className="flex items-center space-x-8">
-              <div className="relative">
-                {profile?.avatar ? (
-                  <img
-                    src={profile.avatar}
-                    alt="Avatar"
-                    className="w-32 h-32 rounded-full object-cover border-4 border-green-200 shadow-lg"
-                  />
-                ) : (
-                  <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center shadow-lg">
-                    <span className="text-white text-4xl font-bold drop-shadow-lg">
-                      {profile?.username?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase()}
-                    </span>
-                  </div>
-                )}
-                
-                {/* Avatar Edit Button */}
-                <button
-                  onClick={() => setEditingAvatar(true)}
-                  className="absolute bottom-2 right-2 bg-blue-500/80 backdrop-blur-md border border-blue-300/50 text-white w-8 h-8 rounded-full text-xs font-bold hover:bg-blue-500/90 transition-colors flex items-center justify-center"
-                  title="Edit Avatar"
-                >
-                  📷
-                </button>
-              </div>
-              
-              <div className="flex-1">
-                <div className="flex items-center gap-4 mb-2">
-                  {editingUsername ? (
-                    <div className="flex items-center gap-2 flex-1">
-                      <input
-                        type="text"
-                        value={newUsername}
-                        onChange={(e) => setNewUsername(e.target.value)}
-                        className="text-2xl font-bold text-white border-2 border-white/30 bg-white/10 backdrop-blur-md rounded-lg px-3 py-1 focus:outline-none focus:border-white/50 max-w-xs truncate placeholder-white/70"
-                        placeholder="Enter username"
-                        maxLength="30"
-                      />
-                      <button
-                        onClick={handleUsernameUpdate}
-                        disabled={updating}
-                        className="bg-green-500/80 backdrop-blur-md border border-green-300/50 text-white px-3 py-1 rounded-lg text-sm font-semibold hover:bg-green-500/90 disabled:opacity-50"
-                      >
-                        {updating ? "..." : "Save"}
-                      </button>
-                      <button
-                        onClick={cancelEdit}
-                        className="bg-gray-500/80 backdrop-blur-md border border-gray-300/50 text-white px-3 py-1 rounded-lg text-sm font-semibold hover:bg-gray-500/90"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  ) : (
-                    <>
-                      <h2 className="text-3xl font-bold text-white truncate max-w-md drop-shadow-lg" title={profile?.username || "Set Username"}>
-                        {profile?.username || "Set Username"}
-                      </h2>
-                      <button
-                        onClick={() => setEditingUsername(true)}
-                        className="bg-blue-500/80 backdrop-blur-md border border-blue-300/50 text-white px-3 py-1 rounded-lg text-sm font-semibold hover:bg-blue-500/90 transition-colors"
-                      >
-                        ✏️ Edit
-                      </button>
-                    </>
-                  )}
-                </div>
-                <p className="text-white/90 text-lg mb-2 break-all drop-shadow-md" title={user?.email}>{user?.email}</p>
-                <p className="text-sm text-white/70 drop-shadow-md">
-                  HooBank Member since {new Date(user?.created_at).toLocaleDateString()}
-                </p>
-                <div className="mt-4">
-                  {user?.email_confirmed_at ? (
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-500/30 text-green-100 border border-green-300/50 backdrop-blur-md">
-                      ✓ Verified Account
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-500/30 text-red-100 border border-red-300/50 backdrop-blur-md">
-                      ✗ Email Not Verified
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
+            <span>{message}</span>
+          </div>
+        )}
 
-            {/* Avatar Edit Modal */}
-            {editingAvatar && (
-              <div className="mt-6 p-4 bg-white/10 backdrop-blur-md border border-white/30 rounded-lg">
-                <h3 className="text-lg font-bold text-white mb-3 drop-shadow-md">Update Avatar</h3>
-                <div className="mb-3 text-sm text-white/80">
-                  <p className="mb-2">📝 <strong>Supported image URLs:</strong></p>
-                  <ul className="list-disc list-inside space-y-1 text-xs">
-                    <li>Direct image links ending in .jpg, .png, .gif, .webp</li>
-                    <li>Imgur: i.imgur.com/IMAGE_ID.jpg</li>
-                    <li>GitHub: raw.githubusercontent.com/user/repo/main/image.jpg</li>
-                  </ul>
-                  <p className="mt-2 text-red-300">❌ <strong>Google Drive links will NOT work</strong></p>
+        <div className="grid grid-cols-1 gap-8 mb-8">
+          {/* Account Details Card */}
+          <div className="bg-neutral-800/80 backdrop-blur-lg border border-neutral-700 rounded-2xl p-8 shadow-lg">
+            <h3 className="flex items-center gap-2 text-2xl font-semibold mb-6">
+              <RiUserLine className="w-6 h-6 opacity-80" />
+              Account Details
+            </h3>
+            <div className="flex items-center gap-4 mb-6">
+              {profile?.avatar ? (
+                <img
+                  src={profile.avatar}
+                  alt="Avatar"
+                  className="w-20 h-20 rounded-full object-cover border-4 border-green-200 shadow-lg"
+                />
+              ) : (
+                <div className="w-20 h-20 rounded-full bg-neutral-700/60 backdrop-blur-md border border-neutral-600 flex items-center justify-center shadow-lg">
+                  <span className="text-white text-3xl font-bold drop-shadow-lg">
+                    {profile?.username?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase()}
+                  </span>
                 </div>
-                <div className="flex items-center gap-4">
+              )}
+            </div>
+            <p className="flex items-center gap-2 mb-2">
+              <RiIdCardLine className="w-5 h-5 opacity-80" /> ID: {user?.id}
+            </p>
+            <p className="flex flex-wrap items-center gap-2 mb-2">
+              <RiUserLine className="w-5 h-5 opacity-80" /> Username: {profile?.username || "Not set"}
+              {editingUsername ? (
+                <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
                   <input
-                    type="url"
-                    value={newAvatar}
-                    onChange={(e) => setNewAvatar(e.target.value)}
-                    className="flex-1 p-3 border-2 border-white/30 bg-white/10 backdrop-blur-md rounded-lg focus:outline-none focus:border-white/50 text-sm break-all text-white placeholder-white/60"
-                    placeholder="https://example.com/avatar.jpg"
+                    type="text"
+                    value={newUsername}
+                    onChange={(e) => setNewUsername(e.target.value)}
+                    className="text-base font-bold text-white border-2 border-white/30 bg-white/10 backdrop-blur-md rounded-lg px-2 py-1 focus:outline-none focus:border-white/50 max-w-xs truncate placeholder-white/70"
+                    placeholder="Enter username"
+                    maxLength="30"
                   />
                   <button
-                    onClick={handleAvatarUpdate}
+                    onClick={handleUsernameUpdate}
                     disabled={updating}
-                    className="bg-green-500/80 backdrop-blur-md border border-green-300/50 text-white px-4 py-3 rounded-lg font-semibold hover:bg-green-500/90 disabled:opacity-50"
+                    className="bg-green-500/80 backdrop-blur-md border border-green-300/50 text-white px-2 py-1 rounded-lg text-xs font-semibold hover:bg-green-500/90 disabled:opacity-50 flex items-center gap-1"
                   >
-                    {updating ? "..." : "Save"}
+                    {updating ? "..." : <><RiCheckboxCircleLine size={14} /> Save</>}
                   </button>
                   <button
                     onClick={cancelEdit}
-                    className="bg-gray-500/80 backdrop-blur-md border border-gray-300/50 text-white px-4 py-3 rounded-lg font-semibold hover:bg-gray-500/90"
+                    className="bg-gray-500/80 backdrop-blur-md border border-gray-300/50 text-white px-2 py-1 rounded-lg text-xs font-semibold hover:bg-gray-500/90 flex items-center gap-1"
                   >
-                    Cancel
+                    <RiEditLine size={14} /> Cancel
                   </button>
                 </div>
-                {newAvatar && (
-                  <div className="mt-3">
-                    <p className="text-sm text-white/80 mb-2">Preview:</p>
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={newAvatar}
-                        alt="Avatar Preview"
-                        className="w-16 h-16 rounded-full object-cover border-2 border-white/30"
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                          e.target.nextSibling.style.display = 'block';
-                        }}
-                        onLoad={(e) => {
-                          e.target.nextSibling.style.display = 'none';
-                        }}
-                      />
-                      <div className="text-red-300 text-sm hidden">
-                        ❌ Invalid image URL or image failed to load
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Information Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-            {/* Account Info Card */}
-            <div className="bg-white/20 backdrop-blur-lg border border-white/30 rounded-2xl shadow-xl p-6 bounce-in delay-500 hover:shadow-2xl hover:bg-white/25 transition-all">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-transparent rounded-lg flex items-center justify-center">
-                  <span className="text-blue-300 text-xl font-bold drop-shadow-lg">👤</span>
-                </div>
-                <h3 className="text-xl font-bold text-white ml-3 drop-shadow-md">Account Details</h3>
-              </div>
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-sm font-medium text-white/70 mb-1">Username</label>
-                  <p className="text-white font-semibold truncate drop-shadow-md" title={profile?.username || "Not set"}>
-                    {profile?.username || "Not set"}
-                  </p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-white/70 mb-1">Email</label>
-                  <p className="text-white font-semibold break-all text-sm drop-shadow-md" title={user?.email}>
-                    {user?.email}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Security Card */}
-            <div className="bg-white/20 backdrop-blur-lg border border-white/30 rounded-2xl shadow-xl p-6 bounce-in delay-600 hover:shadow-2xl hover:bg-white/25 transition-all">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-transparent rounded-lg flex items-center justify-center">
-                  <span className="text-green-300 text-xl font-bold drop-shadow-lg">🔒</span>
-                </div>
-                <h3 className="text-xl font-bold text-white ml-3 drop-shadow-md">Security</h3>
-              </div>
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-sm font-medium text-white/70 mb-1">Account Status</label>
-                  <p className="text-white font-semibold drop-shadow-md">Active</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-white/70 mb-1">Email Verification</label>
-                  <p className={`font-semibold drop-shadow-md ${user?.email_confirmed_at ? 'text-green-300' : 'text-red-300'}`}>
-                    {user?.email_confirmed_at ? "Verified" : "Pending"}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Authentication Provider Card */}
-            <div className="bg-white/20 backdrop-blur-lg border border-white/30 rounded-2xl shadow-xl p-6 bounce-in delay-650 hover:shadow-2xl hover:bg-white/25 transition-all">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-transparent rounded-lg flex items-center justify-center">
-                  <span className="text-yellow-300 text-xl font-bold drop-shadow-lg">
-                    {user?.app_metadata?.provider === 'google' ? '🔍' : '📧'}
-                  </span>
-                </div>
-                <h3 className="text-xl font-bold text-white ml-3 drop-shadow-md">Sign-in Method</h3>
-              </div>
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-sm font-medium text-white/70 mb-1">Provider</label>
-                  <p className="text-white font-semibold capitalize drop-shadow-md">
-                    {user?.app_metadata?.provider === 'google' ? '🔍 Google' : '📧 Email'}
-                  </p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-white/70 mb-1">Last Sign In</label>
-                  <p className="text-white font-semibold text-sm drop-shadow-md">
-                    {new Date(user?.last_sign_in_at).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Account ID Card */}
-            <div className="bg-white/20 backdrop-blur-lg border border-white/30 rounded-2xl shadow-xl p-6 bounce-in delay-700 hover:shadow-2xl hover:bg-white/25 transition-all">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-transparent rounded-lg flex items-center justify-center">
-                  <span className="text-purple-300 text-xl font-bold drop-shadow-lg">🆔</span>
-                </div>
-                <h3 className="text-xl font-bold text-white ml-3 drop-shadow-md">Account ID</h3>
-              </div>
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-sm font-medium text-white/70 mb-1">User ID</label>
-                  <p className="text-white text-xs font-mono bg-white/10 backdrop-blur-md border border-white/20 p-2 rounded-lg break-all overflow-hidden" title={user?.id}>
-                    {user?.id}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Welcome Message Card */}
-          <div className="bg-white/20 backdrop-blur-lg border border-white/30 rounded-2xl shadow-2xl p-8 text-center bounce-in delay-800">
-            <h2 className="text-3xl font-bold text-white mb-4 break-words drop-shadow-lg">
-              Welcome to HooBank, {profile?.username || user?.user_metadata?.full_name || user?.email?.split('@')[0]}! 🎉
-            </h2>
-            <p className="text-white/90 text-lg opacity-90 max-w-3xl mx-auto mb-4 drop-shadow-md">
-              You have successfully logged in to your dashboard. Here you can manage your profile, 
-              track your financial goals, and access exclusive HooBank features. Start your journey 
-              towards financial freedom today!
+              ) : (
+                <button
+                  onClick={() => setEditingUsername(true)}
+                  className="ml-2 bg-blue-500/80 backdrop-blur-md border border-blue-300/50 text-white px-2 py-1 rounded-lg text-xs font-semibold hover:bg-blue-500/90 transition-colors flex items-center gap-1"
+                >
+                  <RiEditLine size={14} /> Edit
+                </button>
+              )}
             </p>
-            {user?.app_metadata?.provider === 'google' && (
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-3 text-white text-sm">
-                <span className="font-semibold drop-shadow-md">✅ Signed in with Google</span>
-                <p className="mt-1 opacity-90 drop-shadow-md">Your profile information has been imported from your Google account.</p>
-              </div>
-            )}
+            <p className="flex items-center gap-2">
+              <RiMailLine className="w-5 h-5 opacity-80" /> Email: {user?.email}
+            </p>
+            <p className="flex items-center gap-2 mb-2">
+              <RiShieldLine className="w-5 h-5 opacity-80" /> Email Verification: {user?.email_confirmed_at ? "Enabled" : "Disabled"}
+            </p>
+            <p className="flex items-center gap-2 mb-2">
+              <RiFileTextLine className="w-5 h-5 opacity-80" /> Last Sign In: {new Date(user?.last_sign_in_at).toLocaleDateString()}
+            </p>
+            <p className="text-xs text-white/70 mt-2">
+              HooBank Member since {new Date(user?.created_at).toLocaleDateString()}
+            </p>
+            <div className="mt-4">
+              {user?.email_confirmed_at ? (
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-500/30 text-green-100 border border-green-300/50 backdrop-blur-md gap-1">
+                  <RiCheckboxCircleLine size={16} /> Verified Account
+                </span>
+              ) : (
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-500/30 text-red-100 border border-red-300/50 backdrop-blur-md gap-1">
+                  <RiCloseCircleLine size={16} /> Email Not Verified
+                </span>
+              )}
+            </div>
           </div>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* GitHub Repo Widget */}
+          <GitHubRepoWidget />
+          {/* Stock Market Widget */}
+          {user && <StockMarketWidget symbol="AAPL" userId={user.id} />}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
