@@ -5,12 +5,7 @@
 @tailwind utilities;
 
 :root {
-  --black-gradient: linear-gradient(
-    144.39deg,
-    #ffffff -278.56%,
-    #6d6d6d -78.47%,
-    #11101d 91.61%
-  );
+  --black-gradient: linear-gradient(90deg, #fff 0%, #f9fafb 50%, #fafaf9 100%);
   --card-shadow: 0px 20px 100px -10px rgba(66, 71, 91, 0.1);
 }
 
@@ -19,7 +14,7 @@
 }
 
 body {
-  background: linear-gradient(to right, #a8ff78, #78ffd6);
+  background: linear-gradient(90deg, #fff 0%, #f9fafb 50%, #fafaf9 100%);
   color: #2d3748 !important;
   font-family: 'Poppins', sans-serif;
 }
@@ -30,8 +25,8 @@ body {
 }
 
 /* Specific text element overrides */
-p, span, div, a, li, ul, ol {
-  color: #2d3748 !important;
+span {
+  color: #646d7c !important;
 }
 
 /* White text override for better contrast */
@@ -61,14 +56,7 @@ p, span, div, a, li, ul, ol {
 }
 
 .text-gradient {
-  background: linear-gradient(
-    135deg,
-    #1a202c 0%,
-    #2d3748 25%,
-    #4a5568 50%,
-    #2d3748 75%,
-    #1a202c 100%
-  );
+  background: linear-gradient(90deg, #1a202c 0%, #4a5568 50%, #2d3748 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -78,14 +66,7 @@ p, span, div, a, li, ul, ol {
 }
 
 .text-gradient-alt {
-  background: linear-gradient(
-    45deg,
-    #2dd4bf 0%,
-    #14b8a6 25%,
-    #0f766e 50%,
-    #115e59 75%,
-    #134e4a 100%
-  );
+  background: linear-gradient(90deg, #f9fafb 0%, #fafaf9 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -94,46 +75,12 @@ p, span, div, a, li, ul, ol {
   animation: gradientShift 4s ease-in-out infinite reverse;
 }
 
-.bg-blue-gradient {
-  background: linear-gradient(
-    157.81deg,
-    #def9fa -43.27%,
-    #bef3f5 -21.24%,
-    #9dedf0 12.19%,
-    #7de7eb 29.82%,
-    #5ce1e6 51.94%,
-    #33bbcf 90.29%
-  );
-}
-
-.bg-black-gradient {
-  background: linear-gradient(
-    144.39deg,
-    #ffffff -278.56%,
-    #6d6d6d -78.47%,
-    #11101d 91.61%
-  );
-}
-
-.bg-black-gradient-2 {
-  background: linear-gradient(
-    -168.39deg,
-    #ffffff -278.56%,
-    #6d6d6d -78.47%,
-    #11101d 91.61%
-  );
-}
-
-.bg-gray-gradient {
-  background: linear-gradient(
-    153.47deg,
-    rgba(255, 255, 255, 0) -341.94%,
-    #14101d 95.11%
-  );
-}
-
+.bg-blue-gradient,
+.bg-black-gradient,
+.bg-black-gradient-2,
+.bg-gray-gradient,
 .bg-discount-gradient {
-  background: linear-gradient(125.17deg, #272727 0%, #11101d 100%);
+  background: linear-gradient(90deg, #fff 0%, #f9fafb 50%, #fafaf9 100%) !important;
 }
 
 .box-shadow {
@@ -167,208 +114,67 @@ p, span, div, a, li, ul, ol {
   }
 }
 
-.feature-card {
-  color: #4a5568;
-  transition: all 0.3s ease;
+.feature-card,
+.feedback-card,
+.neumorphic-card,
+.section-title,
+.card-header,
+.text-content,
+.content-block,
+.stat-block,
+.number-block {
+  background: #fff !important;
+  border: 1px solid #f3f4f6 !important;
+  color: #2d3748 !important;
 }
 
-.feature-card h3 {
-  color: #2d3748;
-  font-weight: 600;
-}
+.feature-card:hover,
+.feedback-card:hover,
+.neumorphic-card:hover,
+.card-header:hover,
+.section-title:hover,
+.text-content:hover,
+.content-block:hover,
+.stat-block:hover,
 
-.feature-card p {
-  color: #4a5568;
-}
 
-.feature-card:hover {
-  background: linear-gradient(135deg, #38b2ac 0%, #319795 50%, #2c7a7b 100%);
-  box-shadow: 0px 12px 30px rgba(56, 178, 172, 0.4), 0px 0px 0px 3px rgba(22, 101, 52, 0.6);
-  color: #ffffff;
-  transform: translateY(-8px) scale(1.02);
-  border: 3px solid rgba(22, 101, 52, 0.8);
-  border-radius: 16px;
-}
 
-.feature-card:hover h3,
-.feature-card:hover p {
-  color: #ffffff;
-}
-
-.feedback-container .feedback-card:last-child {
-  margin-right: 0px;
-}
-
-.feedback-card {
-  background: transparent;
-  color: #4a5568;
-  transition: all 0.3s ease;
-}
-
-.feedback-card h4 {
-  color: #2d3748;
-  font-weight: 600;
-}
-
-.feedback-card p {
-  color: #4a5568;
-}
-
-.feedback-card:hover {
-  background: linear-gradient(135deg, #38b2ac 0%, #319795 50%, #2c7a7b 100%);
-  color: #ffffff;
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0px 12px 30px rgba(56, 178, 172, 0.4), 0px 0px 0px 3px rgba(22, 101, 52, 0.6);
-  border: 3px solid rgba(22, 101, 52, 0.8);
-  border-radius: 16px;
-}
-
-.feedback-card:hover h4,
-.feedback-card:hover p {
-  color: #ffffff;
-}
-
-.blue__gradient {
-  background: linear-gradient(180deg, rgba(188, 165, 255, 0) 0%, #214d76 100%);
-  filter: blur(123px);
-}
-
-.pink__gradient {
-  background: linear-gradient(90deg, #f4c4f3 0%, #fc67fa 100%);
-  filter: blur(900px);
-}
-
-.white__gradient {
-  background: rgba(255, 255, 255, 0.6);
-  filter: blur(750px);
-}
-
-.neumorphic-navbar {
-  background: #e0e0e0;
-  box-shadow: inset 7px 7px 15px #bebebe, inset -7px -7px 15px #ffffff;
-  border-radius: 10px;
-  color: #2d3748;
-}
-
-.neumorphic-navbar h1, 
-.neumorphic-navbar h2, 
-.neumorphic-navbar h3,
-.neumorphic-navbar p,
-.neumorphic-navbar a {
-  color: #2d3748;
-}
-
-.neumorphic-sidebar {
-  background: #e0e0e0;
-  box-shadow: inset 7px 7px 15px #bebebe, inset -7px -7px 15px #ffffff;
-  border-radius: 10px;
-  color: #2d3748;
-}
-
-.neumorphic-sidebar h1, 
-.neumorphic-sidebar h2, 
-.neumorphic-sidebar h3,
-.neumorphic-sidebar p,
-.neumorphic-sidebar a {
-  color: #2d3748;
-}
-
-.neumorphic-card {
-  background: #e0e0e0;
-  box-shadow: 7px 7px 15px #bebebe, -7px -7px 15px #ffffff;
-  border-radius: 20px;
-  color: #4a5568;
-}
-
-.neumorphic-card h1, 
-.neumorphic-card h2, 
-.neumorphic-card h3 {
-  color: #2d3748;
-}
-
-.neumorphic-card p {
-  color: #4a5568;
-}
-
-h1, h2, h3 {
-  color: #1a202c;
-  font-weight: 700;
-  transition: all 0.3s ease;
-}
-
-h1 {
-  font-size: 3.5rem;
-  line-height: 1.1;
-  background: linear-gradient(135deg, #2d3748 0%, #1a202c 50%, #2d3748 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: fadeInUp 1s ease-out;
-}
-
-h2 {
-  font-size: 2.5rem;
-  line-height: 1.2;
-  color: #2d3748;
-  animation: fadeInUp 1.2s ease-out;
-}
-
-h3 {
-  font-size: 1.5rem;
-  color: #4a5568;
-  animation: fadeInUp 1.4s ease-out;
-}
-
-p {
-  color: #4a5568;
-  line-height: 1.6;
-  font-weight: 400;
-  transition: color 0.3s ease;
-  animation: fadeInUp 1.6s ease-out;
-}
-
-button {
-  background: linear-gradient(135deg, #38b2ac 0%, #319795 50%, #2c7a7b 100%);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 12px 24px;
-  font-weight: 600;
-  box-shadow: 0px 8px 20px rgba(56, 178, 172, 0.3);
-  transition: all 0.3s ease;
-  transform: translateY(0);
-  position: relative;
-  overflow: hidden;
-}
-
-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-}
-
-button:hover {
-  background: linear-gradient(135deg, #319795 0%, #2c7a7b 50%, #285e61 100%);
-  transform: translateY(-2px);
-  box-shadow: 0px 12px 25px rgba(56, 178, 172, 0.4);
-}
-
-button:hover::before {
-  left: 100%;
-}
-
-/* Enhanced hover effects for navigation and links */
 nav a:hover, .nav-link:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 255, 250, 0.9) 100%);
+  background: linear-gradient(90deg, #f9fafb 0%, #fafaf9 100%) !important;
   color: #1a202c !important;
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0px 8px 20px rgba(56, 178, 172, 0.3), 0px 0px 0px 2px rgba(56, 178, 172, 0.2);
-  border: 2px solid rgba(56, 178, 172, 0.4);
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.04);
+  border: 1px solid #e5e7eb !important;
+  border-radius: 12px;
+  padding: 8px 16px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+li, .list-item {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin: 8px 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  background: #fff !important;
+}
+
+li:hover, .list-item:hover {
+  background: linear-gradient(90deg, #f9fafb 0%, #fafaf9 100%) !important;
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0px 8px 25px rgba(0,0,0,0.04);
+  border: 1.5px solid #e5e7eb !important;
+  color: #1a202c !important;
+}
+
+/* Enhanced hover effects for navigation and links - dark theme */
+nav a:hover, .nav-link:hover {
+  background: #23272f !important;
+  color: #fff !important;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.12);
+  border: 1px solid #444 !important;
   border-radius: 12px;
   padding: 8px 16px;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -376,9 +182,9 @@ nav a:hover, .nav-link:hover {
 
 /* Enhanced hover for general clickable elements */
 .clickable:hover, .interactive:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 255, 250, 0.95) 100%);
+  background: linear-gradient(90deg, #f9fafb 0%, #fafaf9 100%) !important;
   transform: translateY(-5px) scale(1.02);
-  box-shadow: 0px 12px 30px rgba(56, 178, 172, 0.3), 0px 0px 0px 3px rgba(56, 178, 172, 0.2);
+  box-shadow: 0px 12px 30px rgba(0,0,0,0.03), 0px 0px 0px 3px rgba(0,0,0,0.02);
   border: 2px solid rgba(22, 101, 52, 0.7);
   border-radius: 16px;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -386,39 +192,40 @@ nav a:hover, .nav-link:hover {
 
 /* List items hover effects with dark green border */
 li, .list-item {
-  border: 2px solid rgba(22, 101, 52, 0.3);
+  border: 1px solid #e5e7eb !important;
   border-radius: 12px;
   padding: 12px 16px;
   margin: 8px 0;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.1);
+  background: #fff !important;
 }
 
 li:hover, .list-item:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 255, 250, 0.95) 100%);
+  background: linear-gradient(90deg, #f9fafb 0%, #fafaf9 100%) !important;
   transform: translateY(-3px) scale(1.01);
-  box-shadow: 0px 8px 25px rgba(56, 178, 172, 0.3), 0px 0px 0px 2px rgba(22, 101, 52, 0.4);
-  border: 2px solid rgba(22, 101, 52, 0.8);
+  box-shadow: 0px 8px 25px rgba(0,0,0,0.04);
+  border: 1.5px solid #e5e7eb !important;
   color: #1a202c !important;
 }
 
 /* Content elements that should be hoverable */
 .feature-item, .benefit-item, .service-item {
-  border: 2px solid rgba(22, 101, 52, 0.3);
+  border: 1px solid #e5e7eb !important;
   border-radius: 12px;
   padding: 16px;
   margin: 12px 0;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.05);
+  background: #fff !important;
 }
 
 .feature-item:hover, .benefit-item:hover, .service-item:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 255, 250, 0.95) 100%);
+  background: linear-gradient(90deg, #f9fafb 0%, #fafaf9 100%) !important;
   transform: translateY(-5px) scale(1.02);
-  box-shadow: 0px 12px 30px rgba(56, 178, 172, 0.3), 0px 0px 0px 3px rgba(22, 101, 52, 0.4);
-  border: 2px solid rgba(22, 101, 52, 0.8);
+  box-shadow: 0px 12px 30px rgba(0,0,0,0.03), 0px 0px 0px 3px rgba(0,0,0,0.02);
+  border: 2px solid rgba(22, 101, 52, 0.7);
+  border-radius: 16px;
   color: #1a202c !important;
 }
 
@@ -671,89 +478,23 @@ h1:hover, h2:hover, h3:hover {
   font-weight: 700;
 }
 
-/* Force all text elements to use dark colors for green background */
-body, body * {
-  color: #1a202c !important;
-}
-
-/* Override specific Tailwind classes that might be causing white text */
-.text-dimWhite,
-.text-white,
-.text-gray-100,
-.text-gray-200 {
-  color: #1a202c !important;
-}
 
 /* Fix text gradient to be more visible */
 
-/* Ensure navbar and button text is visible */
-nav, nav * {
-  color: #1a202c !important;
-}
 
 button, button * {
   color: #ffffff !important;
 }
 
-/* Override for any remaining white text */
-[class*="text-white"],
-[class*="text-dimWhite"] {
-  color: #1a202c !important;
-}
 
-/* Specific overrides for common components */
-.navbar-text,
-.hero-text,
-.section-text {
-  color: #1a202c !important;
-}
 
-/* Make sure headings are dark and visible */
-h1, h2, h3, h4, h5, h6 {
-  color: #1a202c !important;
-}
 
-/* Override any remaining light text */
-.opacity-70 {
-  color: #4a5568 !important;
-  opacity: 1 !important;
-}
 
-/* Additional text color fixes */
-span, div:not(.text-gradient) {
-  color: #1a202c !important;
-}
 
-/* Make sure all paragraph text is dark */
-p:not(.text-gradient) {
-  color: #2d3748 !important;
-}
 
-/* Hero section text fixes */
-.hero-text {
-  color: #1a202c !important;
-  background: none !important;
-  -webkit-text-fill-color: #1a202c !important;
-}
 
-/* Navigation text */
-nav a, nav span, nav div {
-  color: #1a202c !important;
-}
 
-/* Ensure all text in sections is dark */
-section, section * {
-  color: #1a202c !important;
-}
 
-section p {
-  color: #2d3748 !important;
-}
-
-/* Override any remaining Tailwind classes */
-.text-xl, .text-lg, .text-base, .text-sm {
-  color: #1a202c !important;
-}
 
 /* Card hover effects with light background */
 .card-3d-effect:hover {
@@ -768,19 +509,19 @@ section p {
 
 /* Text content blocks */
 .text-content, .content-block {
-  border: 2px solid rgba(22, 101, 52, 0.2);
+  border: 1px solid #e5e7eb !important;
   border-radius: 10px;
   padding: 16px;
   margin: 10px 0;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.03);
+  background: #fff !important;
 }
 
 .text-content:hover, .content-block:hover {
-  background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
+  background: linear-gradient(90deg, #f9fafb 0%, #fafaf9 100%) !important;
   transform: translateY(-4px) scale(1.01);
-  box-shadow: 0px 10px 25px rgba(56, 178, 172, 0.3), 0px 0px 0px 3px rgba(22, 101, 52, 0.5);
+  box-shadow: 0px 10px 25px rgba(0,0,0,0.03), 0px 0px 0px 3px rgba(0,0,0,0.02);
   border: 3px solid rgba(22, 101, 52, 0.9);
   color: #ffffff !important;
 }
@@ -791,19 +532,19 @@ section p {
 
 /* Icon containers */
 .icon-container, .icon-wrapper {
-  border: 2px solid rgba(22, 101, 52, 0.3);
+  border: 1px solid #e5e7eb !important;
   border-radius: 50%;
   padding: 12px;
   display: inline-block;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.1);
+  background: #fff !important;
 }
 
 .icon-container:hover, .icon-wrapper:hover {
-  background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
+  background: linear-gradient(90deg, #f9fafb 0%, #fafaf9 100%) !important;
   transform: translateY(-3px) scale(1.1) rotate(5deg);
-  box-shadow: 0px 8px 20px rgba(56, 178, 172, 0.4), 0px 0px 0px 3px rgba(22, 101, 52, 0.6);
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.04), 0px 0px 0px 3px rgba(22, 101, 52, 0.6);
   border: 3px solid rgba(22, 101, 52, 0.9);
 }
 
@@ -833,7 +574,7 @@ section p {
 
 /* Statistics or number blocks */
 .stat-block, .number-block {
-  border: 2px solid rgba(22, 101, 52, 0.3);
+  border: 1px solid #e5e7eb !important;
   border-radius: 12px;
   padding: 18px;
   text-align: center;
@@ -844,9 +585,9 @@ section p {
 }
 
 .stat-block:hover, .number-block:hover {
-  background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
+  background: linear-gradient(90deg, #f9fafb 0%, #fafaf9 100%) !important;
   transform: translateY(-5px) scale(1.05);
-  box-shadow: 0px 12px 25px rgba(56, 178, 172, 0.4), 0px 0px 0px 3px rgba(22, 101, 52, 0.6);
+  box-shadow: 0px 12px 25px rgba(0,0,0,0.04), 0px 0px 0px 3px rgba(22, 101, 52, 0.6);
   border: 3px solid rgba(22, 101, 52, 0.9);
   color: #ffffff !important;
 }
@@ -857,20 +598,20 @@ section p {
 
 /* Card headers and titles */
 .card-header, .section-title {
-  border: 2px solid rgba(22, 101, 52, 0.2);
+  border: 1px solid #e5e7eb !important;
   border-radius: 8px;
   padding: 12px 16px;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.05);
+  background: #fff !important;
   display: inline-block;
   margin: 8px 0;
 }
 
 .card-header:hover, .section-title:hover {
-  background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
+  background: linear-gradient(90deg, #f9fafb 0%, #fafaf9 100%) !important;
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0px 8px 20px rgba(56, 178, 172, 0.3), 0px 0px 0px 2px rgba(22, 101, 52, 0.5);
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.04), 0px 0px 0px 2px rgba(22, 101, 52, 0.5);
   border: 3px solid rgba(22, 101, 52, 0.8);
   color: #ffffff !important;
 }
@@ -917,5 +658,74 @@ section p {
   50% {
     transform: scale(1.02);
     opacity: 0.8;
+  }
+}
+
+
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }

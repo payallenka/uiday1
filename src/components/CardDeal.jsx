@@ -14,7 +14,9 @@ const CardDeal = () => (
         aliquet eget mauris tortor.ç Aliquet ultrices ac, ametau.
       </p>
 
-      <Button styles={`mt-10`} />
+      <Button styles="py-4 px-6 font-poppins font-medium text-[18px] text-[#fff] bg-neutral-800 hover:bg-neutral-700 rounded-[10px] outline-none transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg border border-neutral-700 mt-10">
+        Get Started
+      </Button>
     </div>
 
     <div className={layout.sectionImg}>
