@@ -38,7 +38,7 @@ const StockMarketWidget = ({ symbol = DEFAULT_SYMBOL, userId }) => {
       if (!cacheOk) {
         try {
           const res = await fetch(
-            `/api/marketstack?symbol=${symbol}&limit=5`
+            `http://api.marketstack.com/v1/eod?access_key=${API_KEY}&symbols=${symbol}&limit=5`
           );
           const json = await res.json();
           if (json.data) {
