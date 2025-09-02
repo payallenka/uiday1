@@ -8,6 +8,7 @@ import Button from "../components/Button";
 import GitHubRepoWidget from "../components/GitHubRepoWidget";
 import StockMarketWidget from "../components/StockMarketWidget";
 import ChatbotWidget from "../components/ChatbotWidget";
+import TextSummarizerWidget from "../components/TextSummarizerWidget";
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -313,6 +314,9 @@ const Dashboard = () => {
             <GitHubRepoWidget />
             {/* Stock Market Widget */}
             {user && <StockMarketWidget symbol="AAPL" userId={user.id} />}
+          </div>
+          <div className="mt-12">
+            <TextSummarizerWidget />
           </div>
         </div>
       </section>
