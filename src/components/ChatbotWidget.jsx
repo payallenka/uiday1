@@ -65,6 +65,12 @@ export default function ChatbotWidget({ user }) {
     setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, loading]);
+
   return (
     <div>
       {/* Floating Button */}
