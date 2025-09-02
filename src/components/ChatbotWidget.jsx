@@ -54,7 +54,12 @@ export default function ChatbotWidget() {
             <span className="font-semibold text-white">AI Assistant</span>
             <button onClick={() => setOpen(false)} className="text-white text-xl hover:text-red-400">&times;</button>
           </div>
-          <div className="flex-1 px-4 py-2 overflow-y-auto max-h-96" style={{ minHeight: 200 }}>
+          <div className="flex-1 px-4 py-2 overflow-y-auto max-h-96" style={{ minHeight: 200 }}
+            ref={chatEndRef}
+            onScroll={e => {
+              // Optional: handle scroll events if needed
+            }}
+          >
             {messages.map((msg, i) => (
               <div key={i} className={`my-2 ${msg.role === "user" ? "text-right" : "text-left"}`}>
                 <span className={`inline-block px-3 py-2 rounded-lg ${msg.role === "user" ? "bg-blue-600 text-white" : "bg-neutral-800 text-white border border-neutral-700"}`}>
