@@ -16,11 +16,11 @@ export default async function handler(req, res) {
         body: JSON.stringify({ inputs: prompt })
       }
     );
+    const text = await response.text();
     let data;
     try {
-      data = await response.json();
+      data = JSON.parse(text);
     } catch (jsonErr) {
-      const text = await response.text();
       return res.status(500).json({ error: "Failed to fetch from Hugging Face", details: text });
     }
     if (data.error) {
