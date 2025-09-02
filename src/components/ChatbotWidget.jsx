@@ -45,12 +45,13 @@ export default function ChatbotWidget({ user }) {
   useEffect(() => {
     const saveHistory = async () => {
       if (!user) return;
+      if (!messages || messages.length === 0) return; // Don't upsert empty/null
       console.log("ChatbotWidget upserting chat history for userId:", user.id);
       await supabase
         .from("chat_history")
         .upsert({ user_id: user.id, messages, updated_at: new Date().toISOString() }, { onConflict: ['user_id'] });
     };
-    if (user) saveHistory();
+    if (user && messages && messages.length > 0) saveHistory();
     // eslint-disable-next-line
   }, [messages, user]);
 
