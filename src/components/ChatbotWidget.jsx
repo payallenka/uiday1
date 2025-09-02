@@ -10,11 +10,17 @@ export default function ChatbotWidget({ user }) {
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef(null);
 
+  useEffect(() => {
+    // Debug: log userId as soon as it is available, just like StockMarketWidget
+    if (user) {
+      console.log("ChatbotWidget userId:", user.id);
+    }
+  }, [user]);
+
   // Load chat history on mount if user is logged in
   useEffect(() => {
     const loadHistory = async () => {
       if (!user) return;
-      console.log("ChatbotWidget userId:", user.id);
       const { data, error } = await supabase
         .from("chat_history")
         .select("messages")
@@ -22,9 +28,9 @@ export default function ChatbotWidget({ user }) {
         .single();
       if (data && data.messages) {
         setMessages(data.messages);
-        console.log("Loaded chat history for userId:", user.id);
+        console.log("ChatbotWidget loaded chat history for userId:", user.id);
       } else {
-        console.log("No chat history found for userId:", user.id);
+        console.log("ChatbotWidget no chat history found for userId:", user.id);
       }
     };
     loadHistory();
@@ -35,7 +41,7 @@ export default function ChatbotWidget({ user }) {
   useEffect(() => {
     const saveHistory = async () => {
       if (!user) return;
-      console.log("Upserting chat history for userId:", user.id);
+      console.log("ChatbotWidget upserting chat history for userId:", user.id);
       await supabase
         .from("chat_history")
         .upsert({ user_id: user.id, messages, updated_at: new Date().toISOString() }, { onConflict: "user_id" });
