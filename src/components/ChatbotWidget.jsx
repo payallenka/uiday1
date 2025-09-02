@@ -62,6 +62,13 @@ export default function ChatbotWidget() {
                 </span>
               </div>
             ))}
+            {loading && (
+              <div className="my-2 text-left">
+                <span className="inline-block px-3 py-2 rounded-lg bg-neutral-800 text-white border border-neutral-700 opacity-70 animate-pulse">
+                  AI is typing...
+                </span>
+              </div>
+            )}
             <div ref={chatEndRef} />
           </div>
           <form onSubmit={sendMessage} className="flex border-t border-neutral-700 bg-neutral-800">
