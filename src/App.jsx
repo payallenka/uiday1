@@ -8,6 +8,7 @@ import SetNewPassword from "./pages/SetNewPassword";
 import { supabase } from "./helper/supabaseClient";
 import styles from "./style";
 import { useEffect, useState } from "react";
+import ChatbotWidget from "./components/ChatbotWidget";
 
 const ProtectedRoute = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -75,6 +76,8 @@ const HomePage = () => (
         <Footer />
       </div>
     </div>
+    {/* Floating Chatbot Widget, always visible on homepage */}
+    <ChatbotWidget />
   </div>
 );
 
