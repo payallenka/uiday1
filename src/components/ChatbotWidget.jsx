@@ -17,17 +17,16 @@ export default function ChatbotWidget() {
     setInput("");
     setLoading(true);
     try {
-      const res = await fetch("/api/openai", {
+      // Send only the latest user message as prompt to Hugging Face
+      const res = await fetch("/api/huggingface", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          messages: newMessages.map(({ role, content }) => ({ role, content })),
-        }),
+        body: JSON.stringify({ prompt: input }),
       });
       const data = await res.json();
-      const reply = data.choices?.[0]?.message?.content?.trim() || "Sorry, I couldn't get a response.";
+      const reply = data.reply?.trim() || "Sorry, I couldn't get a response.";
       setMessages([...newMessages, { role: "assistant", content: reply }]);
     } catch {
       setMessages([...newMessages, { role: "assistant", content: "Sorry, I couldn't get a response from the server." }]);
