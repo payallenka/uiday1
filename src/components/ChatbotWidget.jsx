@@ -28,6 +28,9 @@ export default function ChatbotWidget({ user }) {
         .select("messages")
         .eq("user_id", user.id)
         .single();
+      if (error) {
+        console.error("Supabase select error:", error);
+      }
       if (data && data.messages) {
         setMessages(data.messages);
         console.log("ChatbotWidget loaded chat history for userId:", user.id);
