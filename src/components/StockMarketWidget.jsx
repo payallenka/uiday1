@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../helper/supabaseClient";
 
-const API_KEY = "38efae7d7d00332d9a1d391f4a9b72a7";
 const DEFAULT_SYMBOL = "AAPL";
 
 const StockMarketWidget = ({ symbol = DEFAULT_SYMBOL, userId }) => {
