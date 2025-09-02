@@ -7,6 +7,7 @@ import styles from "../style";
 import Button from "../components/Button";
 import GitHubRepoWidget from "../components/GitHubRepoWidget";
 import StockMarketWidget from "../components/StockMarketWidget";
+import ChatbotWidget from "../components/ChatbotWidget";
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -194,126 +195,130 @@ const Dashboard = () => {
   }
 
   return (
-    <section className="py-16 px-4 min-h-screen overflow-x-hidden" style={{ backgroundColor: '#000' }}>
-      <div className="max-w-5xl mx-auto text-white">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-12">
-          <h2 className="text-4xl font-bold text-center md:text-left mb-6 md:mb-0 drop-shadow-lg">
-            Dashboard
-          </h2>
-          <div className="flex gap-4 justify-center md:justify-end">
-            <Button styles="px-6 py-3" onClick={() => navigate("/")}>Home</Button>
-            <Button styles="px-6 py-3 bg-red-600 border-red-700 hover:bg-red-700" onClick={handleLogout}>Logout</Button>
-          </div>
-        </div>
-
-        {message && (
-          <div className={`flex items-center gap-2 mb-6 p-4 rounded-lg ${
-            message.includes("successfully")
-              ? "bg-green-600/20 text-green-400"
-              : "bg-red-600/20 text-red-400"
-          }`}>
-            {message.includes("successfully") ? (
-              <RiCheckboxCircleLine className="w-5 h-5" />
-            ) : (
-              <RiCloseCircleLine className="w-5 h-5" />
-            )}
-            <span>{message}</span>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 gap-8 mb-8">
-          {/* Account Details Card */}
-          <div className="bg-neutral-800/80 backdrop-blur-lg border border-neutral-700 rounded-2xl p-8 shadow-lg">
-            <h3 className="flex items-center gap-2 text-2xl font-semibold mb-6">
-              <RiUserLine className="w-6 h-6 opacity-80" />
-              Account Details
-            </h3>
-            <div className="flex items-center gap-4 mb-6">
-              {profile?.avatar ? (
-                <img
-                  src={profile.avatar}
-                  alt="Avatar"
-                  className="w-20 h-20 rounded-full object-cover border-4 border-green-200 shadow-lg"
-                />
-              ) : (
-                <div className="w-20 h-20 rounded-full bg-neutral-700/60 backdrop-blur-md border border-neutral-600 flex items-center justify-center shadow-lg">
-                  <span className="text-white text-3xl font-bold drop-shadow-lg">
-                    {profile?.username?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase()}
-                  </span>
-                </div>
-              )}
+    <>
+      <section className="py-16 px-4 min-h-screen overflow-x-hidden" style={{ backgroundColor: '#000' }}>
+        <div className="max-w-5xl mx-auto text-white">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-12">
+            <h2 className="text-4xl font-bold text-center md:text-left mb-6 md:mb-0 drop-shadow-lg">
+              Dashboard
+            </h2>
+            <div className="flex gap-4 justify-center md:justify-end">
+              <Button styles="px-6 py-3" onClick={() => navigate("/")}>Home</Button>
+              <Button styles="px-6 py-3 bg-red-600 border-red-700 hover:bg-red-700" onClick={handleLogout}>Logout</Button>
             </div>
-            <p className="flex items-center gap-2 mb-2">
-              <RiIdCardLine className="w-5 h-5 opacity-80" /> ID: {user?.id}
-            </p>
-            <p className="flex flex-wrap items-center gap-2 mb-2">
-              <RiUserLine className="w-5 h-5 opacity-80" /> Username: {profile?.username || "Not set"}
-              {editingUsername ? (
-                <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-                  <input
-                    type="text"
-                    value={newUsername}
-                    onChange={(e) => setNewUsername(e.target.value)}
-                    className="text-base font-bold text-white border-2 border-white/30 bg-white/10 backdrop-blur-md rounded-lg px-2 py-1 focus:outline-none focus:border-white/50 max-w-xs truncate placeholder-white/70"
-                    placeholder="Enter username"
-                    maxLength="30"
+          </div>
+
+          {message && (
+            <div className={`flex items-center gap-2 mb-6 p-4 rounded-lg ${
+              message.includes("successfully")
+                ? "bg-green-600/20 text-green-400"
+                : "bg-red-600/20 text-red-400"
+            }`}>
+              {message.includes("successfully") ? (
+                <RiCheckboxCircleLine className="w-5 h-5" />
+              ) : (
+                <RiCloseCircleLine className="w-5 h-5" />
+              )}
+              <span>{message}</span>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 gap-8 mb-8">
+            {/* Account Details Card */}
+            <div className="bg-neutral-800/80 backdrop-blur-lg border border-neutral-700 rounded-2xl p-8 shadow-lg">
+              <h3 className="flex items-center gap-2 text-2xl font-semibold mb-6">
+                <RiUserLine className="w-6 h-6 opacity-80" />
+                Account Details
+              </h3>
+              <div className="flex items-center gap-4 mb-6">
+                {profile?.avatar ? (
+                  <img
+                    src={profile.avatar}
+                    alt="Avatar"
+                    className="w-20 h-20 rounded-full object-cover border-4 border-green-200 shadow-lg"
                   />
+                ) : (
+                  <div className="w-20 h-20 rounded-full bg-neutral-700/60 backdrop-blur-md border border-neutral-600 flex items-center justify-center shadow-lg">
+                    <span className="text-white text-3xl font-bold drop-shadow-lg">
+                      {profile?.username?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase()}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <p className="flex items-center gap-2 mb-2">
+                <RiIdCardLine className="w-5 h-5 opacity-80" /> ID: {user?.id}
+              </p>
+              <p className="flex flex-wrap items-center gap-2 mb-2">
+                <RiUserLine className="w-5 h-5 opacity-80" /> Username: {profile?.username || "Not set"}
+                {editingUsername ? (
+                  <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                    <input
+                      type="text"
+                      value={newUsername}
+                      onChange={(e) => setNewUsername(e.target.value)}
+                      className="text-base font-bold text-white border-2 border-white/30 bg-white/10 backdrop-blur-md rounded-lg px-2 py-1 focus:outline-none focus:border-white/50 max-w-xs truncate placeholder-white/70"
+                      placeholder="Enter username"
+                      maxLength="30"
+                    />
+                    <button
+                      onClick={handleUsernameUpdate}
+                      disabled={updating}
+                      className="bg-green-500/80 backdrop-blur-md border border-green-300/50 text-white px-2 py-1 rounded-lg text-xs font-semibold hover:bg-green-500/90 disabled:opacity-50 flex items-center gap-1"
+                    >
+                      {updating ? "..." : <><RiCheckboxCircleLine size={14} /> Save</>}
+                    </button>
+                    <button
+                      onClick={cancelEdit}
+                      className="bg-gray-500/80 backdrop-blur-md border border-gray-300/50 text-white px-2 py-1 rounded-lg text-xs font-semibold hover:bg-gray-500/90 flex items-center gap-1"
+                    >
+                      <RiEditLine size={14} /> Cancel
+                    </button>
+                  </div>
+                ) : (
                   <button
-                    onClick={handleUsernameUpdate}
-                    disabled={updating}
-                    className="bg-green-500/80 backdrop-blur-md border border-green-300/50 text-white px-2 py-1 rounded-lg text-xs font-semibold hover:bg-green-500/90 disabled:opacity-50 flex items-center gap-1"
+                    onClick={() => setEditingUsername(true)}
+                    className="ml-2 bg-blue-500/80 backdrop-blur-md border border-blue-300/50 text-white px-2 py-1 rounded-lg text-xs font-semibold hover:bg-blue-500/90 transition-colors flex items-center gap-1"
                   >
-                    {updating ? "..." : <><RiCheckboxCircleLine size={14} /> Save</>}
+                    <RiEditLine size={14} /> Edit
                   </button>
-                  <button
-                    onClick={cancelEdit}
-                    className="bg-gray-500/80 backdrop-blur-md border border-gray-300/50 text-white px-2 py-1 rounded-lg text-xs font-semibold hover:bg-gray-500/90 flex items-center gap-1"
-                  >
-                    <RiEditLine size={14} /> Cancel
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setEditingUsername(true)}
-                  className="ml-2 bg-blue-500/80 backdrop-blur-md border border-blue-300/50 text-white px-2 py-1 rounded-lg text-xs font-semibold hover:bg-blue-500/90 transition-colors flex items-center gap-1"
-                >
-                  <RiEditLine size={14} /> Edit
-                </button>
-              )}
-            </p>
-            <p className="flex items-center gap-2">
-              <RiMailLine className="w-5 h-5 opacity-80" /> Email: {user?.email}
-            </p>
-            <p className="flex items-center gap-2 mb-2">
-              <RiShieldLine className="w-5 h-5 opacity-80" /> Email Verification: {user?.email_confirmed_at ? "Enabled" : "Disabled"}
-            </p>
-            <p className="flex items-center gap-2 mb-2">
-              <RiFileTextLine className="w-5 h-5 opacity-80" /> Last Sign In: {new Date(user?.last_sign_in_at).toLocaleDateString()}
-            </p>
-            <p className="text-xs text-white/70 mt-2">
-              HooBank Member since {new Date(user?.created_at).toLocaleDateString()}
-            </p>
-            <div className="mt-4">
-              {user?.email_confirmed_at ? (
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-500/30 text-green-100 border border-green-300/50 backdrop-blur-md gap-1">
-                  <RiCheckboxCircleLine size={16} /> Verified Account
-                </span>
-              ) : (
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-500/30 text-red-100 border border-red-300/50 backdrop-blur-md gap-1">
-                  <RiCloseCircleLine size={16} /> Email Not Verified
-                </span>
-              )}
+                )}
+              </p>
+              <p className="flex items-center gap-2">
+                <RiMailLine className="w-5 h-5 opacity-80" /> Email: {user?.email}
+              </p>
+              <p className="flex items-center gap-2 mb-2">
+                <RiShieldLine className="w-5 h-5 opacity-80" /> Email Verification: {user?.email_confirmed_at ? "Enabled" : "Disabled"}
+              </p>
+              <p className="flex items-center gap-2 mb-2">
+                <RiFileTextLine className="w-5 h-5 opacity-80" /> Last Sign In: {new Date(user?.last_sign_in_at).toLocaleDateString()}
+              </p>
+              <p className="text-xs text-white/70 mt-2">
+                HooBank Member since {new Date(user?.created_at).toLocaleDateString()}
+              </p>
+              <div className="mt-4">
+                {user?.email_confirmed_at ? (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-500/30 text-green-100 border border-green-300/50 backdrop-blur-md gap-1">
+                    <RiCheckboxCircleLine size={16} /> Verified Account
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-500/30 text-red-100 border border-red-300/50 backdrop-blur-md gap-1">
+                    <RiCloseCircleLine size={16} /> Email Not Verified
+                  </span>
+                )}
+              </div>
             </div>
           </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* GitHub Repo Widget */}
+            <GitHubRepoWidget />
+            {/* Stock Market Widget */}
+            {user && <StockMarketWidget symbol="AAPL" userId={user.id} />}
+          </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* GitHub Repo Widget */}
-          <GitHubRepoWidget />
-          {/* Stock Market Widget */}
-          {user && <StockMarketWidget symbol="AAPL" userId={user.id} />}
-        </div>
-      </div>
-    </section>
+      </section>
+      {/* Floating Chatbot Widget, always visible */}
+      <ChatbotWidget />
+    </>
   );
 };
 
