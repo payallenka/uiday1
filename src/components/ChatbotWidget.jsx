@@ -5,9 +5,7 @@ export default function ChatbotWidget({ user }) {
   console.log("ChatbotWidget rendered, userId prop:", user ? user.id : undefined);
 
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hi! How can I help you today?" }
-  ]);
+  const [messages, setMessages] = useState(null);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef(null);
@@ -31,10 +29,11 @@ export default function ChatbotWidget({ user }) {
       if (error) {
         console.error("Supabase select error:", error);
       }
-      if (data && data.messages) {
+      if (data && data.messages && data.messages.length > 0) {
         setMessages(data.messages);
         console.log("ChatbotWidget loaded chat history for userId:", user.id);
       } else {
+        setMessages([{ role: "assistant", content: "Hi! How can I help you today?" }]);
         console.log("ChatbotWidget no chat history found for userId:", user.id);
       }
     };
@@ -109,13 +108,17 @@ export default function ChatbotWidget({ user }) {
           <div className="flex-1 px-4 py-2 overflow-y-auto max-h-96" style={{ minHeight: 200 }}
             ref={chatEndRef}
           >
-            {messages.map((msg, i) => (
-              <div key={i} className={`my-2 ${msg.role === "user" ? "text-right" : "text-left"}`}>
-                <span className={`inline-block px-3 py-2 rounded-lg ${msg.role === "user" ? "bg-blue-600 text-white" : "bg-neutral-800 text-white border border-neutral-700"}`}>
-                  {msg.content}
-                </span>
-              </div>
-            ))}
+            {messages === null ? (
+              <div className="text-center text-white/60 py-4">Loading chat...</div>
+            ) : (
+              messages.map((msg, i) => (
+                <div key={i} className={`my-2 ${msg.role === "user" ? "text-right" : "text-left"}`}>
+                  <span className={`inline-block px-3 py-2 rounded-lg ${msg.role === "user" ? "bg-blue-600 text-white" : "bg-neutral-800 text-white border border-neutral-700"}`}>
+                    {msg.content}
+                  </span>
+                </div>
+              ))
+            )}
             {loading && (
               <div className="my-2 text-left">
                 <span className="inline-block px-3 py-2 rounded-lg bg-neutral-800 text-white border border-neutral-700 opacity-70 animate-pulse">
