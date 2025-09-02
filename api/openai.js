@@ -1,15 +1,4 @@
-// Simple in-memory rate limiter (per-IP, 1 request per 10 seconds)
-const rateLimitMap = new Map();
-
 export default async function handler(req, res) {
-  const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown';
-  const now = Date.now();
-  const last = rateLimitMap.get(ip) || 0;
-  if (now - last < 10000) { // 10 seconds
-    return res.status(429).json({ error: "Too many requests. Please wait a few seconds before trying again." });
-  }
-  rateLimitMap.set(ip, now);
-
   const { messages } = req.body;
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
