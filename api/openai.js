@@ -19,9 +19,13 @@ export default async function handler(req, res) {
       }),
     });
     const data = await response.json();
+    console.log("OpenAI API response:", JSON.stringify(data));
+    if (!response.ok) {
+      return res.status(response.status).json({ error: data.error || "OpenAI API error", full: data });
+    }
     res.status(200).json(data);
   } catch (err) {
     console.error("OpenAI fetch error", err);
-    res.status(500).json({ error: "Failed to fetch from OpenAI" });
+    res.status(500).json({ error: "Failed to fetch from OpenAI", details: err.message });
   }
 }
