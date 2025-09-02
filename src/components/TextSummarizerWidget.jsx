@@ -31,7 +31,7 @@ export default function TextSummarizerWidget() {
   };
 
   return (
-    <div className="bg-neutral-800 border border-neutral-700 rounded-xl p-6 shadow-lg mb-8 w-full max-w-2xl mx-auto">
+    <div className="bg-neutral-800 border border-neutral-700 rounded-xl p-6 shadow-lg mb-8 w-full max-w-3xl mx-auto">
       <h3 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
         <span role="img" aria-label="summarize"></span> Text Summarizer
       </h3>
