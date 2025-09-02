@@ -8,6 +8,8 @@ const StockMarketWidget = ({ symbol = DEFAULT_SYMBOL, userId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  console.log("StockMarketWidget rendered, userId prop:", userId);
+
   useEffect(() => {
     async function fetchStock() {
       setLoading(true);
