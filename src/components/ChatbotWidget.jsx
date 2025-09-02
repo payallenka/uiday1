@@ -17,13 +17,13 @@ export default function ChatbotWidget() {
     setInput("");
     setLoading(true);
     try {
-      // Send only the latest user message as prompt to Hugging Face
-      const res = await fetch("/api/huggingface", {
+      // Send only the latest user message as prompt to PaLM
+      const res = await fetch("/api/palm", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt: input }),
+        body: JSON.stringify({ messages: [{ content: input }] }),
       });
       const data = await res.json();
       const reply = data.reply?.trim() || "Sorry, I couldn't get a response.";
