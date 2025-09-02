@@ -14,6 +14,7 @@ export default function ChatbotWidget({ user }) {
   useEffect(() => {
     const loadHistory = async () => {
       if (!user) return;
+      console.log("ChatbotWidget userId:", user.id);
       const { data, error } = await supabase
         .from("chat_history")
         .select("messages")
@@ -31,9 +32,25 @@ export default function ChatbotWidget({ user }) {
   useEffect(() => {
     const saveHistory = async () => {
       if (!user) return;
-      await supabase
+      const { data, error } = await supabase
         .from("chat_history")
-        .upsert({ user_id: user.id, messages }, { onConflict: "user_id" });
+        .select("id")
+        .eq("user_id", user.id)
+        .single();
+      if (data && data.id) {
+        // Update existing
+        console.log("Updating chat history for userId:", user.id);
+        await supabase
+          .from("chat_history")
+          .update({ messages, updated_at: new Date().toISOString() })
+          .eq("id", data.id);
+      } else {
+        // Insert new
+        console.log("Inserting new chat history for userId:", user.id);
+        await supabase
+          .from("chat_history")
+          .insert({ user_id: user.id, messages });
+      }
     };
     if (user) saveHistory();
     // eslint-disable-next-line
