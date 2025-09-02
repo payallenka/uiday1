@@ -5,6 +5,8 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Hugging Face API key not set." });
   }
   try {
+    // Log the prompt for debugging
+    console.log("Prompt received:", prompt);
     const response = await fetch(
       "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill",
       {
@@ -17,6 +19,7 @@ export default async function handler(req, res) {
       }
     );
     const text = await response.text();
+    console.log("Raw Hugging Face response:", text);
     let data;
     try {
       data = JSON.parse(text);
