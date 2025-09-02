@@ -44,12 +44,14 @@ const StockMarketWidget = ({ symbol = DEFAULT_SYMBOL, userId }) => {
             setData(json.data);
             // Store in Supabase
             if (userId) {
-              const upsertResult = await supabase.from("stock_cache").upsert({
-                symbol,
-                user_id: userId,
-                data: json.data,
-                fetched_at: new Date().toISOString(),
-              });
+              const upsertResult = await supabase
+                .from("stock_cache")
+                .upsert({
+                  symbol,
+                  user_id: userId,
+                  data: json.data,
+                  fetched_at: new Date().toISOString(),
+                }, { onConflict: ["user_id", "symbol"] });
               console.log("Supabase upsert result:", upsertResult);
             }
           } else {
