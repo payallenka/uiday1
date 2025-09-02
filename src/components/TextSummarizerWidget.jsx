@@ -31,9 +31,9 @@ export default function TextSummarizerWidget() {
   };
 
   return (
-    <div className="bg-neutral-800 border border-neutral-700 rounded-xl p-6 shadow-lg mb-8 max-w-xl mx-auto">
+    <div className="bg-neutral-800 border border-neutral-700 rounded-xl p-6 shadow-lg mb-8 w-full max-w-2xl mx-auto">
       <h3 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
-        <span role="img" aria-label="summarize">📝</span> Text Summarizer
+        <span role="img" aria-label="summarize"></span> Text Summarizer
       </h3>
       <form onSubmit={handleSummarize} className="flex flex-col gap-4">
         <textarea
@@ -45,15 +45,15 @@ export default function TextSummarizerWidget() {
         />
         <button
           type="submit"
-          className="self-end px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50"
+          className="self-end px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg disabled:opacity-50"
           disabled={loading || !input.trim()}
         >
           {loading ? "Summarizing..." : "Summarize"}
         </button>
       </form>
       {summary && (
-        <div className="mt-6 bg-neutral-900 border border-blue-700 rounded-lg p-4 text-white">
-          <div className="font-semibold mb-2 text-blue-400">Summary:</div>
+        <div className="mt-6 bg-neutral-900 border border-green-500 rounded-lg p-4 text-white">
+          <div className="font-semibold mb-2 text-green-400">Summary:</div>
           <div>{summary}</div>
         </div>
       )}
