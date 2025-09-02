@@ -50,36 +50,49 @@ const ProtectedRoute = ({ children }) => {
   return user ? children : <Navigate to="/auth" />;
 };
 
-const HomePage = () => (
-  <div className="bg-neutral-900 text-white w-full min-h-screen overflow-hidden">
-    <div className={`${styles.paddingX} ${styles.flexCenter}`}>
-      <div className={`${styles.boxWidth}`}>
-        <Navbar />
-      </div>
-    </div>
+const HomePage = () => {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
-    <div className={`bg-neutral-900 ${styles.flexStart}`}>
-      <div className={`${styles.boxWidth}`}>
-        <Hero />
+  return (
+    <div className="bg-neutral-900 text-white w-full min-h-screen overflow-hidden">
+      <div className={`${styles.paddingX} ${styles.flexCenter}`}>
+        <div className={`${styles.boxWidth}`}>
+          <Navbar />
+        </div>
       </div>
-    </div>
-    
-    <div className={`bg-neutral-900 ${styles.paddingX} ${styles.flexCenter}`}>
-      <div className={`${styles.boxWidth}`}>
-        <Stats />
-        <Business />
-        <Billing />
-        <CardDeal />
-        <Testimonials />
-        <Clients />
-        <ContentCards />
-        <Footer />
+
+      <div className={`bg-neutral-900 ${styles.flexStart}`}>
+        <div className={`${styles.boxWidth}`}>
+          <Hero />
+        </div>
       </div>
+      
+      <div className={`bg-neutral-900 ${styles.paddingX} ${styles.flexCenter}`}>
+        <div className={`${styles.boxWidth}`}>
+          <Stats />
+          <Business />
+          <Billing />
+          <CardDeal />
+          <Testimonials />
+          <Clients />
+          <ContentCards />
+          <Footer />
+        </div>
+      </div>
+      {/* Floating Chatbot Widget, only visible if logged in */}
+      {user && <ChatbotWidget user={user} />}
     </div>
-    {/* Floating Chatbot Widget, always visible on homepage */}
-    <ChatbotWidget />
-  </div>
-);
+  );
+};
 
 const App = () => (
   <Router>
