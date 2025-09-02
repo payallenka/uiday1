@@ -46,7 +46,7 @@ export default function ChatbotWidget({ user }) {
       console.log("ChatbotWidget upserting chat history for userId:", user.id);
       await supabase
         .from("chat_history")
-        .upsert({ user_id: user.id, messages, updated_at: new Date().toISOString() }, { onConflict: "user_id" });
+        .upsert({ user_id: user.id, messages, updated_at: new Date().toISOString() }, { onConflict: ['user_id'] });
     };
     if (user) saveHistory();
     // eslint-disable-next-line

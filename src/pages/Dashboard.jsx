@@ -23,9 +23,9 @@ const Dashboard = () => {
   useEffect(() => {
     const getUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+      
       if (session?.user) {
-        setUser(session.user);
-        
         // Get user profile
         const { data: profileData, error } = await supabase
           .from("profiles")
@@ -316,8 +316,8 @@ const Dashboard = () => {
           </div>
         </div>
       </section>
-      {/* Floating Chatbot Widget, always visible */}
-      <ChatbotWidget />
+      {/* Floating Chatbot Widget, only visible if logged in */}
+      {user && <ChatbotWidget user={user} />}
     </>
   );
 };
