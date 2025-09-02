@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
   try {
     const response = await fetch(
-      "https://api-inference.huggingface.co/models/distilgpt2",
+      "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill",
       {
         method: "POST",
         headers: {
@@ -20,14 +20,17 @@ export default async function handler(req, res) {
     let data;
     try {
       data = JSON.parse(text);
-    } catch (jsonErr) {
-      return res.status(500).json({ error: "Failed to fetch from Hugging Face", details: text });
+    } catch {
+      return res.status(500).json({ error: "Invalid response from Hugging Face", details: text });
     }
-    if (data.error) {
+    if (Array.isArray(data) && data[0]?.generated_text) {
+      return res.status(200).json({ reply: data[0].generated_text });
+    } else if (data.error) {
       return res.status(500).json({ error: data.error });
+    } else {
+      return res.status(500).json({ error: "Unexpected response from Hugging Face", details: data });
     }
-    res.status(200).json({ reply: data[0]?.generated_text || "" });
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch from Hugging Face", details: err.message });
+    return res.status(500).json({ error: "Failed to fetch from Hugging Face", details: err.message });
   }
 }
