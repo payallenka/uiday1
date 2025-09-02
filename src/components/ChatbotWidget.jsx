@@ -1,6 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { supabase } from "../helper/supabaseClient";
 
-export default function ChatbotWidget() {
+export default function ChatbotWidget({ user }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
     { role: "assistant", content: "Hi! How can I help you today?" }
@@ -8,6 +9,35 @@ export default function ChatbotWidget() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef(null);
+
+  // Load chat history on mount if user is logged in
+  useEffect(() => {
+    const loadHistory = async () => {
+      if (!user) return;
+      const { data, error } = await supabase
+        .from("chat_history")
+        .select("messages")
+        .eq("user_id", user.id)
+        .single();
+      if (data && data.messages) {
+        setMessages(data.messages);
+      }
+    };
+    loadHistory();
+    // eslint-disable-next-line
+  }, [user]);
+
+  // Save chat history after each message if user is logged in
+  useEffect(() => {
+    const saveHistory = async () => {
+      if (!user) return;
+      await supabase
+        .from("chat_history")
+        .upsert({ user_id: user.id, messages }, { onConflict: "user_id" });
+    };
+    if (user) saveHistory();
+    // eslint-disable-next-line
+  }, [messages, user]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -56,9 +86,6 @@ export default function ChatbotWidget() {
           </div>
           <div className="flex-1 px-4 py-2 overflow-y-auto max-h-96" style={{ minHeight: 200 }}
             ref={chatEndRef}
-            onScroll={e => {
-              // Optional: handle scroll events if needed
-            }}
           >
             {messages.map((msg, i) => (
               <div key={i} className={`my-2 ${msg.role === "user" ? "text-right" : "text-left"}`}>
