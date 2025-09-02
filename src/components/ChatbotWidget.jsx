@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { supabase } from "../helper/supabaseClient";
 
 export default function ChatbotWidget({ user }) {
+  console.log("ChatbotWidget rendered, userId prop:", user ? user.id : undefined);
+
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
     { role: "assistant", content: "Hi! How can I help you today?" }
